@@ -6,100 +6,79 @@ export type Item = {
 
 export const demos: { name: string; items: Item[] }[] = [
   {
-    name: 'Layouts',
+    name: 'Números Pseudoaleatorios',
     items: [
       {
-        name: 'Nested Layouts',
-        slug: 'layouts',
+        name: 'Cuadrados Medios',
+        slug: 'cuadrados-medios',
         description: 'Create UI that is shared across routes',
       },
       {
-        name: 'Grouped Layouts',
-        slug: 'route-groups',
+        name: 'Productos Mínimos',
+        slug: 'productos-minimos',
         description: 'Organize routes without affecting URL paths',
       },
       {
-        name: 'Parallel Routes',
-        slug: 'parallel-routes',
+        name: 'Algoritmo Congruencial Lineal',
+        slug: 'algoritmo-conguencial-lineal',
+        description: 'Render multiple pages in the same layout',
+      },
+      {
+        name: 'Algoritmo Congruencial Multiplicativo',
+        slug: 'algoritmo-conguencial-multiplicativo',
         description: 'Render multiple pages in the same layout',
       },
     ],
   },
   {
-    name: 'File Conventions',
+    name: 'Modelos de Simulación',
     items: [
       {
-        name: 'Loading',
-        slug: 'loading',
+        name: 'Calculo DPF',
+        slug: 'calculo-dpf',
         description:
           'Create meaningful Loading UI for specific parts of an app',
       },
       {
-        name: 'Error',
-        slug: 'error-handling',
+        name: 'Estimación de Población',
+        slug: 'estimacion-de-poblacion',
         description: 'Create Error UI for specific parts of an app',
       },
       {
-        name: 'Not Found',
-        slug: 'not-found',
+        name: 'Juego de Craps',
+        slug: 'juego-de-craps',
+        description: 'Create Not Found UI for specific parts of an app',
+      },
+      {
+        name: 'Problema de Maximización',
+        slug: 'problema-de-maximizacion',
+        description: 'Create Not Found UI for specific parts of an app',
+      },
+      {
+        name: 'Llegada de Clientes',
+        slug: 'llegada-de-clientes',
+        description: 'Create Not Found UI for specific parts of an app',
+      },
+      {
+        name: 'Problema de Huevos y Pollos',
+        slug: 'problema-de-huevos-y-pollos',
+        description: 'Create Not Found UI for specific parts of an app',
+      },
+      {
+        name: 'Demanda y Pedido de Azúcar',
+        slug: 'demanda-y-pedido-de-azucar',
         description: 'Create Not Found UI for specific parts of an app',
       },
     ],
   },
   {
-    name: 'Data Fetching',
+    name: 'Proyecto Final',
     items: [
       {
         name: 'Streaming with Suspense',
         slug: 'streaming',
         description:
           'Streaming data fetching from the server with React Suspense',
-      },
-      {
-        name: 'Static Data',
-        slug: 'ssg',
-        description: 'Generate static pages',
-      },
-      {
-        name: 'Dynamic Data',
-        slug: 'ssr',
-        description: 'Server-render pages',
-      },
-      {
-        name: 'Incremental Static Regeneration',
-        slug: 'isr',
-        description: 'Get the best of both worlds between static & dynamic',
-      },
-    ],
-  },
-  {
-    name: 'Components',
-    items: [
-      {
-        name: 'Client Context',
-        slug: 'context',
-        description:
-          'Pass context between Client Components that cross Server/Client Component boundary',
-      },
-    ],
-  },
-  {
-    name: 'Misc',
-    items: [
-      {
-        name: 'Patterns',
-        slug: 'patterns',
-        description: 'A collection of useful App Router patterns',
-      },
-      {
-        name: 'Client Component Hooks',
-        slug: 'hooks',
-        description: 'Preview the routing hooks available in Client Components',
-      },
-      {
-        name: 'CSS and CSS-in-JS',
-        slug: 'styling',
-        description: 'Preview the supported styling solutions',
       },
     ],
   },
