@@ -20,12 +20,12 @@ export const demos: { name: string; items: Item[] }[] = [
       },
       {
         name: 'Algoritmo Congruencial Lineal',
-        slug: 'algoritmo-conguencial-lineal',
+        slug: 'algoritmo-congruencial-lineal',
         description: 'Render multiple pages in the same layout',
       },
       {
         name: 'Algoritmo Congruencial Multiplicativo',
-        slug: 'algoritmo-conguencial-multiplicativo',
+        slug: 'algoritmo-congruencial-multiplicativo',
         description: 'Render multiple pages in the same layout',
       },
     ],
