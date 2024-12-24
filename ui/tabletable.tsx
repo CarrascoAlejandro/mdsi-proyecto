@@ -16,9 +16,9 @@ interface PrefabTableProps {
 
 export default function PrefabTable({ rows, columns }: PrefabTableProps) {
   return (
-    <Table className="min-w-full border-collapse rounded-lg bg-white shadow-md">
+    <Table className="min-w-full border-collapse rounded-lg bg-black shadow-md">
       <TableHeader>
-        <TableRow className="bg-indigo-100 text-gray-700">
+        <TableRow className="bg-indigo-200 text-gray-700">
           {columns.map((col) => (
             <TableCell key={col.name} className="font-semibold">
               {col.name}
@@ -30,7 +30,7 @@ export default function PrefabTable({ rows, columns }: PrefabTableProps) {
         {rows.map((row) => (
           <TableRow
             key={row.key}
-            className="cursor-pointer transition duration-200 hover:bg-indigo-50"
+            className="cursor-pointer transition duration-200 hover:bg-indigo-900"
           >
             {columns.map((col) => (
               <TableCell key={col.name}>

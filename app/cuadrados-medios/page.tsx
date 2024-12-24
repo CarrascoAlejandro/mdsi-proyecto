@@ -8,7 +8,7 @@ export default function Page() {
     { key: '2', Yi: '451584', operation: '0451584', X1: '515', Ri: '0.515' },
     { key: '3', Yi: '265225', operation: '0265225', X1: '652', Ri: '0.652' },
     { key: '4', Yi: '425104', operation: '0425104', X1: '251', Ri: '0.251' },
-    { key: '4', Yi: '63001', operation: '063001', X1: '300', Ri: '0.300' },
+    { key: '5', Yi: '63001', operation: '063001', X1: '300', Ri: '0.300' },
   ];
 
   const columns = [
@@ -35,12 +35,16 @@ export default function Page() {
       </ul>
       <div className="flex gap-2">
         <Form action="empty">
-          <input name="seed" placeholder="Seed" />
-          <input name="quantity" placeholder="Quantity" />
-          <Button type="submit">Submit</Button>
+          <input className="m-2 text-black" name="seed" placeholder="Seed" />
+          <input
+            className="m-2 text-black"
+            name="quantity"
+            placeholder="Quantity"
+          />
+          <Button type="submit">Generate 🎲</Button>
         </Form>
       </div>
-      <PrefabTable rows={rows} columns={columns} />;
+      <PrefabTable rows={rows} columns={columns} />
     </div>
   );
 }
