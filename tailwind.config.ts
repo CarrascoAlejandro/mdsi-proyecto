@@ -1,3 +1,4 @@
+import { nextui } from '@nextui-org/theme';
 import colors from 'tailwindcss/colors';
 import { Config } from 'tailwindcss';
 
@@ -6,6 +7,7 @@ export default {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './ui/**/*.{js,ts,jsx,tsx,mdx}',
+    './node_modules/@nextui-org/theme/dist/components/(table|checkbox|form|spacer).js',
   ],
   future: {
     hoverOnlyWhenSupported: true,
@@ -86,5 +88,9 @@ export default {
       }),
     },
   },
-  plugins: [require('@tailwindcss/typography'), require('@tailwindcss/forms')],
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('@tailwindcss/forms'),
+    nextui(),
+  ],
 } satisfies Config;
