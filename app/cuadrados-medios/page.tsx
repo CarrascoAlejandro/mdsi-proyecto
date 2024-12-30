@@ -12,11 +12,11 @@ export default function Page() {
   ];
 
   const columns = [
-    { name: 'key' },
-    { name: 'Yi' },
-    { name: 'operation' },
-    { name: 'X1' },
-    { name: 'Ri' },
+    { name: 'key', label: 'i' },
+    { name: 'Yi', label: 'Y_i' },
+    { name: 'operation', label: 'Operation' },
+    { name: 'X1', label: 'X_1' },
+    { name: 'Ri', label: 'R_i' },
   ];
 
   return (

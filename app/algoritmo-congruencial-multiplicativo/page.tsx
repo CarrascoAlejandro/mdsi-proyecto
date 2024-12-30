@@ -26,7 +26,11 @@ export default function Page() {
     { key: '5', Xi: '2', Ri: '0.677' },
   ];
 
-  const columns = [{ name: 'key' }, { name: 'Xi' }, { name: 'Ri' }];
+  const columns = [
+    { name: 'key', label: 'i' },
+    { name: 'Xi', label: 'Xi' },
+    { name: 'Ri', label: 'Ri' },
+  ];
 
   return (
     <div className="prose prose-sm prose-invert max-w-none">
