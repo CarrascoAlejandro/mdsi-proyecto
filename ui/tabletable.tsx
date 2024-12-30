@@ -2,6 +2,7 @@ import { Table, TableHeader, TableBody, TableRow, TableCell } from '#/ui/table';
 
 interface PrefabColumn {
   name: string;
+  label: string;
 }
 
 interface PrefabRow {
@@ -21,7 +22,7 @@ export default function PrefabTable({ rows, columns }: PrefabTableProps) {
         <TableRow className="bg-indigo-200 text-gray-700">
           {columns.map((col) => (
             <TableCell key={col.name} className="font-semibold">
-              {col.name}
+              {col.label}
             </TableCell>
           ))}
         </TableRow>
