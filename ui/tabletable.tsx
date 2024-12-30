@@ -10,12 +10,12 @@ interface PrefabRow {
   [key: string]: string; // Allows dynamic additional columns
 }
 
-interface PrefabTableProps {
+export interface PrefabTableProps {
   rows: PrefabRow[];
   columns: PrefabColumn[];
 }
 
-export default function PrefabTable({ rows, columns }: PrefabTableProps) {
+export function PrefabTable({ rows, columns }: PrefabTableProps) {
   return (
     <Table className="min-w-full border-collapse rounded-lg bg-black shadow-md">
       <TableHeader>
