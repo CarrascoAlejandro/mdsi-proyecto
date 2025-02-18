@@ -1,15 +1,20 @@
+"use client";
+
 import Form from 'next/form';
 import Button from '#/ui/button';
-import PrefabTable from '#/ui/tabletable';
+import { PrefabTable } from '#/ui/tabletable';
+import { useState } from 'react';
+import { medianProductsRNG, medianProductsRow } from '#/lib/medianProductsGeneration';
 
 export default function Page() {
-  const rows = [
+  const [rows, setRows] = useState<medianProductsRow[]>([]);
+  /* const rows = [
     { key: '1', Yi: '96721', operation: '96721', X1: '672', Ri: '0.672' },
     { key: '2', Yi: '451584', operation: '0451584', X1: '515', Ri: '0.515' },
     { key: '3', Yi: '265225', operation: '0265225', X1: '652', Ri: '0.652' },
     { key: '4', Yi: '425104', operation: '0425104', X1: '251', Ri: '0.251' },
     { key: '5', Yi: '63001', operation: '063001', X1: '300', Ri: '0.300' },
-  ];
+  ]; */
 
   const columns = [
     { name: 'key', label: 'i' },
@@ -18,6 +23,18 @@ export default function Page() {
     { name: 'X1', label: 'X_1' },
     { name: 'Ri', label: 'R_i' },
   ];
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const seed1 = parseInt(formData.get('seed1') as string, 10);
+    const seed2 = parseInt(formData.get('seed2') as string, 10);
+    const quantity = parseInt(formData.get('quantity') as string, 10);
+    const D = (formData.get('seed1') as string).length;
+
+    const generatedRows = medianProductsRNG(seed1, seed2, D, quantity);
+    setRows(generatedRows);
+  }
 
   return (
     <div className="prose prose-sm prose-invert max-w-none">
@@ -34,7 +51,7 @@ export default function Page() {
         <li>Note that the fetch cache can be persisted across builds.</li>
       </ul>
       <div className="flex gap-2">
-        <Form action="empty">
+        <Form action="empty" onSubmit={handleSubmit}>
           <input
             className="m-2 text-black"
             name="seed-1"
