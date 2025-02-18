@@ -1,9 +1,9 @@
 export interface medianSquaresRow {
-  i: number;
-  x_i: number;
-  y_i: number;
+  key: string;
+  x_i: string;
+  y_i: string;
   operation: string;
-  r_i: number;
+  r_i: string;
 }
 
 export function medianSquaresRNG(
@@ -20,11 +20,11 @@ export function medianSquaresRNG(
     let op = extractCenterDigits(y, D);
     x = parseInt(op, 10); // Extract center digits
     results.push({
-      i,
-      x_i: x_0,
-      y_i: y,
+      key: i.toString(),
+      x_i: x_0.toString(),
+      y_i: y.toString(),
       operation: op,
-      r_i: x / Math.pow(10, D), // Normalize to [0,1]
+      r_i: (x / Math.pow(10, D)).toString(), // Normalize to [0,1]
     });
   }
 

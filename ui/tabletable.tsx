@@ -5,7 +5,7 @@ interface PrefabColumn {
   label: string;
 }
 
-interface PrefabRow {
+export interface PrefabRow {
   key: string;
   [key: string]: string; // Allows dynamic additional columns
 }

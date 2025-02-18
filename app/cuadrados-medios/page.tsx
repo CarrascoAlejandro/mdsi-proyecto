@@ -1,23 +1,30 @@
 import Form from 'next/form';
 import Button from '#/ui/button';
 import { PrefabTable } from '#/ui/tabletable';
+import { useState } from 'react';
+import { medianSquaresRNG, medianSquaresRow } from '#/lib/medianSquaresGeneration';
 
 export default function Page() {
-  const rows = [
-    { key: '1', Yi: '96721', operation: '96721', X1: '672', Ri: '0.672' },
-    { key: '2', Yi: '451584', operation: '0451584', X1: '515', Ri: '0.515' },
-    { key: '3', Yi: '265225', operation: '0265225', X1: '652', Ri: '0.652' },
-    { key: '4', Yi: '425104', operation: '0425104', X1: '251', Ri: '0.251' },
-    { key: '5', Yi: '63001', operation: '063001', X1: '300', Ri: '0.300' },
-  ];
+  const [rows, setRows] = useState<medianSquaresRow[]>([]);
 
   const columns = [
     { name: 'key', label: 'i' },
-    { name: 'Yi', label: 'Y_i' },
+    { name: 'x_i', label: 'X_i' },
+    { name: 'y_i', label: 'Y_i' },
     { name: 'operation', label: 'Operation' },
-    { name: 'X1', label: 'X_1' },
-    { name: 'Ri', label: 'R_i' },
+    { name: 'r_i', label: 'R_i' },
   ];
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const seed = parseInt(formData.get('seed') as string, 10);
+    const quantity = parseInt(formData.get('quantity') as string, 10);
+    const D = seed.toString.length;
+
+    const generatedRows = medianSquaresRNG(seed, D, quantity);
+    setRows(generatedRows);
+  }
 
   return (
     <div className="prose prose-sm prose-invert max-w-none">
