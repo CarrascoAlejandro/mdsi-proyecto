@@ -1,6 +1,6 @@
 import Form from 'next/form';
 import Button from '#/ui/button';
-import PrefabTable from '#/ui/tabletable';
+import { PrefabTable } from '#/ui/tabletable';
 
 export default function Page() {
   const rows = [
