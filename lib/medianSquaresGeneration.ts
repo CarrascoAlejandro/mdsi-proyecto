@@ -1,3 +1,5 @@
+import { extractCenterDigits } from '#/utils/numberUtils';
+
 export interface medianSquaresRow {
   key: string;
   x_i: string;
@@ -14,6 +16,8 @@ export function medianSquaresRNG(
   let results: medianSquaresRow[] = [];
   let x = seed;
 
+  console.log(`median squares params:\nseed: ${seed}\nD: ${D}\nn: ${n}`);
+
   for (let i = 0; i < n; i++) {
     let x_0 = x;
     let y = x * x; // Square the number
@@ -28,5 +32,6 @@ export function medianSquaresRNG(
     });
   }
 
+  console.log('generation results\n', results);
   return results;
 }

@@ -1,4 +1,4 @@
-function extractCenterDigits(N: number, D: number): string {
+export function extractCenterDigits(N: number, D: number): string {
   let numStr = N.toString();
   let totalLength = Math.max(numStr.length, D); // Ensure the number is at least D digits long
 

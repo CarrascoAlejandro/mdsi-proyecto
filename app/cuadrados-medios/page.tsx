@@ -1,8 +1,13 @@
+'use client';
+
 import Form from 'next/form';
 import Button from '#/ui/button';
 import { PrefabTable } from '#/ui/tabletable';
 import { useState } from 'react';
-import { medianSquaresRNG, medianSquaresRow } from '#/lib/medianSquaresGeneration';
+import {
+  medianSquaresRNG,
+  medianSquaresRow,
+} from '#/lib/medianSquaresGeneration';
 
 export default function Page() {
   const [rows, setRows] = useState<medianSquaresRow[]>([]);
@@ -20,11 +25,11 @@ export default function Page() {
     const formData = new FormData(event.currentTarget);
     const seed = parseInt(formData.get('seed') as string, 10);
     const quantity = parseInt(formData.get('quantity') as string, 10);
-    const D = seed.toString.length;
+    const D = (formData.get('seed') as string).length;
 
     const generatedRows = medianSquaresRNG(seed, D, quantity);
     setRows(generatedRows);
-  }
+  };
 
   return (
     <div className="prose prose-sm prose-invert max-w-none">
@@ -41,7 +46,7 @@ export default function Page() {
         <li>Note that the fetch cache can be persisted across builds.</li>
       </ul>
       <div className="flex gap-2">
-        <Form action="empty">
+        <Form action="empty" onSubmit={handleSubmit}>
           <input className="m-2 text-black" name="seed" placeholder="Seed" />
           <input
             className="m-2 text-black"
