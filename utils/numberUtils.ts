@@ -14,3 +14,7 @@ export function extractCenterDigits(N: number, D: number): string {
 //console.log(extractCenterDigits(98765, 3)); // "876"
 //console.log(extractCenterDigits(1, 3)); // "001"
 //console.log(extractCenterDigits(123456789, 6)); // "345678"
+
+export function areBothEvenOdd(a: number, b: number): boolean {
+  return (a % 2 == 0 && b % 2 == 0) || (a % 2 != 0 && b % 2 != 0);
+}

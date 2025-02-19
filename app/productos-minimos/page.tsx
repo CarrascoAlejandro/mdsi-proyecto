@@ -1,10 +1,13 @@
-"use client";
+'use client';
 
 import Form from 'next/form';
 import Button from '#/ui/button';
 import { PrefabTable } from '#/ui/tabletable';
 import { useState } from 'react';
-import { medianProductsRNG, medianProductsRow } from '#/lib/medianProductsGeneration';
+import {
+  medianProductsRNG,
+  medianProductsRow,
+} from '#/lib/medianProductsGeneration';
 
 export default function Page() {
   const [rows, setRows] = useState<medianProductsRow[]>([]);
@@ -18,23 +21,23 @@ export default function Page() {
 
   const columns = [
     { name: 'key', label: 'i' },
-    { name: 'Yi', label: 'Y_i' },
+    { name: 'x_i', label: 'X_i' },
+    { name: 'y_i', label: 'Y_i' },
     { name: 'operation', label: 'Operation' },
-    { name: 'X1', label: 'X_1' },
-    { name: 'Ri', label: 'R_i' },
+    { name: 'r_i', label: 'R_i' },
   ];
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const seed1 = parseInt(formData.get('seed1') as string, 10);
-    const seed2 = parseInt(formData.get('seed2') as string, 10);
+    const seed1 = parseInt(formData.get('seed-1') as string, 10);
+    const seed2 = parseInt(formData.get('seed-2') as string, 10);
     const quantity = parseInt(formData.get('quantity') as string, 10);
-    const D = (formData.get('seed1') as string).length;
+    const D = (formData.get('seed-1') as string).length;
 
     const generatedRows = medianProductsRNG(seed1, seed2, D, quantity);
     setRows(generatedRows);
-  }
+  };
 
   return (
     <div className="prose prose-sm prose-invert max-w-none">

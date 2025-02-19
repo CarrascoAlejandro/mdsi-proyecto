@@ -8,6 +8,11 @@ import {
   medianSquaresRNG,
   medianSquaresRow,
 } from '#/lib/medianSquaresGeneration';
+import { checkIfIsValidNumber } from '#/utils/validators';
+import { Loader } from '#/ui/loader';
+import InputErrorList from '#/ui/input-error';
+import { findDegeneration } from '#/utils/rngUtils';
+import { Boundary } from '#/ui/boundary';
 
 export default function Page() {
   const [rows, setRows] = useState<medianSquaresRow[]>([]);
@@ -20,15 +25,58 @@ export default function Page() {
     { name: 'r_i', label: 'R_i' },
   ];
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const seed = parseInt(formData.get('seed') as string, 10);
-    const quantity = parseInt(formData.get('quantity') as string, 10);
-    const D = (formData.get('seed') as string).length;
+  const [seed, setSeed] = useState('');
+  const [quantity, setQuantity] = useState('');
 
-    const generatedRows = medianSquaresRNG(seed, D, quantity);
+  const [inputErrors, setInputErrors] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [degeneration, setDegeneration] = useState(-1);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setInputErrors([]);
+    event.preventDefault();
+    setLoading(true);
+
+    const fSeed = parseInt(seed, 10);
+    const fQuantity = parseInt(quantity, 10);
+    const D = seed.length;
+
+    const generatedRows = await medianSquaresRNG(fSeed, D, fQuantity);
+    setDegeneration(findDegeneration(generatedRows));
     setRows(generatedRows);
+
+    setLoading(false);
+  };
+
+  const renderDegeneration = () => {
+    if (degeneration > -1)
+      return (
+        <div className="m-3">
+          <Boundary labels={['Info']} color="orange">
+            <div className="space-y-4 text-vercel-orange">
+              <div className="prose prose-lg font-bold">Degeneración</div>
+              <p className="text-sm">{`Se encontró degeneración de la secuencia en la posición i = ${degeneration}`}</p>
+            </div>
+          </Boundary>
+        </div>
+      );
+  };
+
+  const renderTable = () => {
+    if (loading) return Loader();
+    else if (inputErrors.length > 0) return InputErrorList(inputErrors);
+    else if (rows?.length > 0)
+      return <PrefabTable rows={rows} columns={columns} />;
+    else return <p>No data to show...</p>;
+  };
+
+  const handleReset = () => {
+    setInputErrors([]);
+    setRows([]);
+    setLoading(false);
+    setSeed('');
+    setQuantity('');
+    setDegeneration(-1);
   };
 
   return (
@@ -47,16 +95,28 @@ export default function Page() {
       </ul>
       <div className="flex gap-2">
         <Form action="empty" onSubmit={handleSubmit}>
-          <input className="m-2 text-black" name="seed" placeholder="Seed" />
+          <input
+            className="m-2 text-black"
+            name="seed"
+            placeholder="Seed"
+            value={seed}
+            onChange={(e) => checkIfIsValidNumber(e, setSeed)}
+          />
           <input
             className="m-2 text-black"
             name="quantity"
             placeholder="Quantity"
+            value={quantity}
+            onChange={(e) => checkIfIsValidNumber(e, setQuantity)}
           />
           <Button type="submit">Generate 🎲</Button>
+          <Button type="button" onClick={handleReset}>
+            Reset values 🗑️
+          </Button>
         </Form>
       </div>
-      <PrefabTable rows={rows} columns={columns} />
+      {renderDegeneration()}
+      {renderTable()}
     </div>
   );
 }
