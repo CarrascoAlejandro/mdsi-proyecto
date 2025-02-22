@@ -11,22 +11,23 @@ export const demos: { name: string; items: Item[] }[] = [
       {
         name: 'Cuadrados Medios',
         slug: 'cuadrados-medios',
-        description: 'Create UI that is shared across routes',
+        description: 'Genera números aleatorios a partir de una semilla',
       },
       {
-        name: 'Productos Mínimos',
+        name: 'Productos Medios',
         slug: 'productos-minimos',
-        description: 'Organize routes without affecting URL paths',
+        description: 'Genera números aleatorios a partir de dos semillas',
       },
       {
         name: 'Algoritmo Congruencial Lineal',
         slug: 'algoritmo-congruencial-lineal',
-        description: 'Render multiple pages in the same layout',
+        description: 'Genera números aleatorios con una periodicidad calculada',
       },
       {
         name: 'Algoritmo Congruencial Multiplicativo',
         slug: 'algoritmo-congruencial-multiplicativo',
-        description: 'Render multiple pages in the same layout',
+        description:
+          'Genera números aleatorios con una periodicidad calculada y menos parámetros',
       },
     ],
   },

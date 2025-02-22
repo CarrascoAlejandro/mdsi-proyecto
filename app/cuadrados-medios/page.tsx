@@ -54,7 +54,7 @@ export default function Page() {
         <div className="m-3">
           <Boundary labels={['Info']} color="orange">
             <div className="space-y-4 text-vercel-orange">
-              <div className="prose prose-lg font-bold">Degeneración</div>
+              <div className="prose-lg font-bold">Degeneración</div>
               <p className="text-sm">{`Se encontró degeneración de la secuencia en la posición i = ${degeneration}`}</p>
             </div>
           </Boundary>
@@ -83,15 +83,14 @@ export default function Page() {
     <div className="prose prose-sm prose-invert max-w-none">
       <h1 className="text-xl font-bold">Algoritmo de Cuadrados Medios</h1>
       <ul>
-        <li>Welcome to cuadrados medios</li>
-        <li>Caches responses are fresh for 60 seconds.</li>
+        <li>El algoritmo requiere una semilla de longitud D.</li>
+        <li>Los números generados tendrán D posiciones decimales.</li>
         <li>
-          Try navigating to each post and noting the timestamp of when the page
-          was rendered. Refresh the page after 60 seconds to trigger a
-          revalidation for the next request. Refresh again to see the
-          revalidated page.
+          Indica la cantidad de números pseudo-aleatorios que deseas generar.
         </li>
-        <li>Note that the fetch cache can be persisted across builds.</li>
+        <li>
+          Ninguno de los valores de entrada puede ser negativo o con decimales.
+        </li>
       </ul>
       <div className="flex gap-2">
         <Form action="empty" onSubmit={handleSubmit}>

@@ -8,15 +8,17 @@ export interface medianProductsRow {
   r_i: string;
 }
 
-export function medianProductsRNG(
+export async function medianProductsRNG(
   seed1: number,
   seed2: number,
   D: number,
   n: number,
-): medianProductsRow[] {
+): Promise<medianProductsRow[]> {
   let results: medianProductsRow[] = [];
   let x_last = seed1;
   let x_current = seed2;
+
+  console.log('received values\n', [seed1, seed2, D, n]);
 
   for (let i = 0; i < n; i++) {
     let y = x_last * x_current;

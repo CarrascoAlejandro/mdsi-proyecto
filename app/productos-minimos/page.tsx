@@ -8,6 +8,11 @@ import {
   medianProductsRNG,
   medianProductsRow,
 } from '#/lib/medianProductsGeneration';
+import { findDegeneration } from '#/utils/rngUtils';
+import { Boundary } from '#/ui/boundary';
+import { Loader } from '#/ui/loader';
+import InputErrorList from '#/ui/input-error';
+import { checkIfIsValidNumber } from '#/utils/validators';
 
 export default function Page() {
   const [rows, setRows] = useState<medianProductsRow[]>([]);
@@ -27,31 +32,89 @@ export default function Page() {
     { name: 'r_i', label: 'R_i' },
   ];
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const seed1 = parseInt(formData.get('seed-1') as string, 10);
-    const seed2 = parseInt(formData.get('seed-2') as string, 10);
-    const quantity = parseInt(formData.get('quantity') as string, 10);
-    const D = (formData.get('seed-1') as string).length;
+  const [seed1, setSeed1] = useState('');
+  const [seed2, setSeed2] = useState('');
+  const [quantity, setQuantity] = useState('');
 
-    const generatedRows = medianProductsRNG(seed1, seed2, D, quantity);
-    setRows(generatedRows);
+  const [inputErrors, setInputErrors] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [degeneration, setDegeneration] = useState(-1);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setInputErrors([]);
+    event.preventDefault();
+    setLoading(true);
+
+    // Check equal length
+    if (seed1.length !== seed2.length) {
+      setInputErrors([
+        ...inputErrors,
+        'Las longitudes de las semillas no coinciden',
+      ]);
+    }
+
+    const fSeed1 = parseInt(seed1, 10);
+    const fSeed2 = parseInt(seed2, 10);
+    const fQuantity = parseInt(quantity, 10);
+    const D = seed1.length;
+
+    if (inputErrors.length === 0) {
+      const generatedRows = await medianProductsRNG(
+        fSeed1,
+        fSeed2,
+        D,
+        fQuantity,
+      );
+      setDegeneration(findDegeneration(generatedRows));
+      setRows(generatedRows);
+    }
+
+    setLoading(false);
+  };
+
+  const renderDegeneration = () => {
+    if (degeneration > -1)
+      return (
+        <div className="m-3">
+          <Boundary labels={['Info']} color="orange">
+            <div className="space-y-4 text-vercel-orange">
+              <div className="prose-lg font-bold">Degeneración</div>
+              <p className="text-sm">{`Se encontró degeneración de la secuencia en la posición i = ${degeneration}`}</p>
+            </div>
+          </Boundary>
+        </div>
+      );
+  };
+
+  const renderTable = () => {
+    if (loading) return Loader();
+    else if (inputErrors.length > 0) return InputErrorList(inputErrors);
+    else if (rows?.length > 0)
+      return <PrefabTable rows={rows} columns={columns} />;
+    else return <p>No data to show...</p>;
+  };
+
+  const handleReset = () => {
+    setInputErrors([]);
+    setRows([]);
+    setLoading(false);
+    setSeed1('');
+    setSeed2('');
+    setQuantity('');
+    setDegeneration(-1);
   };
 
   return (
     <div className="prose prose-sm prose-invert max-w-none">
-      <h1 className="text-xl font-bold">Algoritmo de Productos Mínimos</h1>
+      <h1 className="text-xl font-bold">Algoritmo de Productos Medios</h1>
       <ul>
-        <li>Welcome to cuadrados medios</li>
-        <li>Caches responses are fresh for 60 seconds.</li>
+        <li>El algoritmo requiere dos semillas de igual longitud D.</li>
         <li>
-          Try navigating to each post and noting the timestamp of when the page
-          was rendered. Refresh the page after 60 seconds to trigger a
-          revalidation for the next request. Refresh again to see the
-          revalidated page.
+          Indica la cantidad de números pseudo-aleatorios que deseas generar.
         </li>
-        <li>Note that the fetch cache can be persisted across builds.</li>
+        <li>
+          Ninguno de los valores de entrada puede ser negativo o con decimales.
+        </li>
       </ul>
       <div className="flex gap-2">
         <Form action="empty" onSubmit={handleSubmit}>
@@ -59,21 +122,31 @@ export default function Page() {
             className="m-2 text-black"
             name="seed-1"
             placeholder="1st Seed"
+            value={seed1}
+            onChange={(e) => checkIfIsValidNumber(e, setSeed1)}
           />
           <input
             className="m-2 text-black"
             name="seed-2"
             placeholder="2nd Seed"
+            value={seed2}
+            onChange={(e) => checkIfIsValidNumber(e, setSeed2)}
           />
           <input
             className="m-2 text-black"
             name="quantity"
             placeholder="Quantity"
+            value={quantity}
+            onChange={(e) => checkIfIsValidNumber(e, setQuantity)}
           />
           <Button type="submit">Generate 🎲</Button>
+          <Button type="button" onClick={handleReset}>
+            Reset values 🗑️
+          </Button>
         </Form>
       </div>
-      <PrefabTable rows={rows} columns={columns} />
+      {renderDegeneration()}
+      {renderTable()}
     </div>
   );
 }
