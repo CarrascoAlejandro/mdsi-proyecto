@@ -4,7 +4,7 @@ import React from 'react';
 
 import Form from 'next/form';
 import Button from '#/ui/button';
-import PrefabTable from '#/ui/tabletable';
+import { PrefabTable } from '#/ui/tabletable';
 import { checkIfIsValidNumber } from '#/utils/validators';
 import { Boundary } from '#/ui/boundary';
 
