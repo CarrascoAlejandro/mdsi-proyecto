@@ -1,6 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+
+import {
+  linearCongruentialRow,
+  linearCongruentialRNG,
+} from '#/lib/linealCongruentialGenerator';
 
 import Form from 'next/form';
 import Button from '#/ui/button';
@@ -9,6 +14,8 @@ import { checkIfIsValidNumber } from '#/utils/validators';
 import { Boundary } from '#/ui/boundary';
 
 export default function Page() {
+  const [rows, setRows] = useState<linearCongruentialRow>([]);
+
   const [X_0, setX_0] = React.useState('');
   const [k, setK] = React.useState('');
   const [q, setQ] = React.useState('');
@@ -16,21 +23,30 @@ export default function Page() {
   const [g, setG] = React.useState('');
   const [m, setM] = React.useState('');
   const [a, setA] = React.useState('');
+  const [n, setN] = React.useState('');
   const [nDecimals, setNDecimals] = React.useState(0);
 
-  const rows = [
-    { key: '1', Xi: '2', Ri: '0.677' },
-    { key: '2', Xi: '1', Ri: '0.333' },
-    { key: '3', Xi: '0', Ri: '0.000' },
-    { key: '4', Xi: '3', Ri: '1.000' },
-    { key: '5', Xi: '2', Ri: '0.677' },
-  ];
+  const [inputErrors, setInputErrors] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const columns = [
     { name: 'key', label: 'i' },
     { name: 'Xi', label: 'Xi' },
     { name: 'Ri', label: 'Ri' },
   ];
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setInputErrors([]);
+    event.preventDefault();
+    setLoading(true);
+
+    const fSeed = parseInt(X_0, 10);
+    const fQuantity = parseInt(n, 10);
+    const fK = parseInt(k, 10);
+    const fC = parseInt(c, 10);
+
+    const generation = await linearCongruentialRNG();
+  };
 
   return (
     <div className="prose prose-sm prose-invert max-w-none">

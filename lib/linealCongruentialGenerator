@@ -1,3 +1,5 @@
+import { nextPowerOfTwo } from '#/utils/numberUtils';
+
 export interface linearCongruentialRow {
     key: string;
     x_i: string;
@@ -15,11 +17,10 @@ export interface linearCongruentialRun {
     values: linearCongruentialRow[]
 }
 
-export function linearCongruentialRNG(n: number, k: number, p: number): linearCongruentialRun {
-    const g = 3;
-    const x_0 = 5;
+export function linearCongruentialRNG(x_0:number, n: number, k: number, c: number): linearCongruentialRun {
+    const p = nextPowerOfTwo(n);
+    const g = Math.log2(p);
     const a = 1 + 4 * k;
-    const c = 7;
     const m = Math.pow(2, g);
 
     let run_values = [] as linearCongruentialRow[];

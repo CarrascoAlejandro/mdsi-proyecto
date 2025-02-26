@@ -18,3 +18,8 @@ export function extractCenterDigits(N: number, D: number): string {
 export function areBothEvenOdd(a: number, b: number): boolean {
   return (a % 2 == 0 && b % 2 == 0) || (a % 2 != 0 && b % 2 != 0);
 }
+
+export function nextPowerOfTwo(n: number): number {
+  if (n <= 1) return 1;
+  return Math.pow(2, Math.ceil(Math.log2(n)));
+}
