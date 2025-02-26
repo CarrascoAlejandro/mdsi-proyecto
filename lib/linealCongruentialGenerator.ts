@@ -17,7 +17,7 @@ export interface linearCongruentialRun {
     values: linearCongruentialRow[]
 }
 
-export function linearCongruentialRNG(x_0:number, n: number, k: number, c: number): linearCongruentialRun {
+export function linearCongruentialRNG(x_0:number, n: number, k: number, c: number, nDecimals: number): linearCongruentialRun {
     const p = nextPowerOfTwo(n);
     const g = Math.log2(p);
     const a = 1 + 4 * k;
@@ -38,7 +38,7 @@ export function linearCongruentialRNG(x_0:number, n: number, k: number, c: numbe
         run_values.push({
             key: i.toString(),
             x_i: x1.toString(),
-            r_i: r_i.toString()
+            r_i: r_i.toFixed(nDecimals)
         })
     }
 

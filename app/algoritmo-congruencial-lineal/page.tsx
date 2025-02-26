@@ -12,9 +12,11 @@ import Button from '#/ui/button';
 import { PrefabTable } from '#/ui/tabletable';
 import { checkIfIsValidNumber } from '#/utils/validators';
 import { Boundary } from '#/ui/boundary';
+import { Loader } from '#/ui/loader';
+import InputErrorList from '#/ui/input-error';
 
 export default function Page() {
-  const [rows, setRows] = useState<linearCongruentialRow>([]);
+  const [rows, setRows] = useState<linearCongruentialRow[]>([]);
 
   const [X_0, setX_0] = React.useState('');
   const [k, setK] = React.useState('');
@@ -45,7 +47,22 @@ export default function Page() {
     const fK = parseInt(k, 10);
     const fC = parseInt(c, 10);
 
-    const generation = await linearCongruentialRNG();
+    const generation = await linearCongruentialRNG(fSeed, fQuantity, fK, fC, nDecimals);
+
+    setG(generation.g.toString());
+    setM(generation.m.toString());
+    setA(generation.a.toString());
+    setRows(generation.values);
+    
+    setLoading(false);
+  };
+
+  const renderTable = () => {
+    if (loading) return Loader();
+    else if (inputErrors.length > 0) return InputErrorList(inputErrors);
+      else if (rows?.length > 0)
+        return <PrefabTable rows={rows} columns={columns} />;
+      else return <p>No data to show...</p>;
   };
 
   return (
