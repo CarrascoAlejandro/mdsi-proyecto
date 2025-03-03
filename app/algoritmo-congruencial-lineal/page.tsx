@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   linearCongruentialRow,
@@ -14,27 +14,28 @@ import { checkIfIsValidNumber } from '#/utils/validators';
 import { Boundary } from '#/ui/boundary';
 import { Loader } from '#/ui/loader';
 import InputErrorList from '#/ui/input-error';
+import { isPowerOfTwo, isPrime } from '#/utils/posValidators';
+import { nextPowerOfTwo } from '#/utils/numberUtils';
 
 export default function Page() {
   const [rows, setRows] = useState<linearCongruentialRow[]>([]);
 
   const [X_0, setX_0] = React.useState('');
   const [k, setK] = React.useState('');
-  const [q, setQ] = React.useState('');
   const [c, setC] = React.useState('');
   const [g, setG] = React.useState('');
   const [m, setM] = React.useState('');
   const [a, setA] = React.useState('');
   const [n, setN] = React.useState('');
-  const [nDecimals, setNDecimals] = React.useState(0);
+  const [nDecimals, setNDecimals] = React.useState(5);
 
   const [inputErrors, setInputErrors] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
   const columns = [
     { name: 'key', label: 'i' },
-    { name: 'Xi', label: 'Xi' },
-    { name: 'Ri', label: 'Ri' },
+    { name: 'x_i', label: 'Xi' },
+    { name: 'r_i', label: 'Ri' },
   ];
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -47,22 +48,65 @@ export default function Page() {
     const fK = parseInt(k, 10);
     const fC = parseInt(c, 10);
 
-    const generation = await linearCongruentialRNG(fSeed, fQuantity, fK, fC, nDecimals);
+    if (!isPrime(fC))
+      setInputErrors([
+        'El valor de c debe ser un número primo',
+        ...inputErrors,
+      ]);
+
+    if (inputErrors.length > 0) {
+      setLoading(false);
+      return;
+    }
+
+    const generation = await linearCongruentialRNG(
+      fSeed,
+      fQuantity,
+      fK,
+      fC,
+      nDecimals,
+    );
 
     setG(generation.g.toString());
     setM(generation.m.toString());
     setA(generation.a.toString());
     setRows(generation.values);
-    
+
     setLoading(false);
   };
 
   const renderTable = () => {
     if (loading) return Loader();
     else if (inputErrors.length > 0) return InputErrorList(inputErrors);
-      else if (rows?.length > 0)
-        return <PrefabTable rows={rows} columns={columns} />;
-      else return <p>No data to show...</p>;
+    else if (rows?.length > 0)
+      return <PrefabTable rows={rows} columns={columns} />;
+    else return <p>No data to show...</p>;
+  };
+
+  /* useEffect(() => {
+    if(!isPrime(parseInt(c, 10))) setInputErrors(['El valor de c debe ser un número primo', ...inputErrors]);
+    else setInputErrors([...inputErrors]);
+  }, [c]) */
+
+  const generationWarnings = () => {
+    let warnings = [] as string[];
+    if (!isPowerOfTwo(parseInt(n)) && !Number.isNaN(parseInt(n))) {
+      const nn = nextPowerOfTwo(parseInt(n));
+      warnings.push(
+        `Se generarán ${nn} valores para alcanzar una potencia de 2`,
+      );
+    }
+    if (!isPrime(parseInt(c, 10))) {
+      warnings.push(`c = ${c} no es un número primo`);
+    }
+
+    return (
+      <ul>
+        {warnings.map((w, index) => (
+          <li key={index}>{w}</li> // Se debe retornar el <li>
+        ))}
+      </ul>
+    );
   };
 
   return (
@@ -81,7 +125,7 @@ export default function Page() {
       </ul>
       <div className="grid md:grid-cols-3">
         <div className="col-span-2 flex gap-2">
-          <Form action="empty">
+          <Form action="empty" onSubmit={handleSubmit}>
             <input
               className="m-2 text-black"
               name="X_0"
@@ -100,8 +144,8 @@ export default function Page() {
               className="m-2 text-black"
               name="quantity"
               placeholder="Quantity to generate"
-              value={q}
-              onChange={(e) => checkIfIsValidNumber(e, setQ)}
+              value={n}
+              onChange={(e) => checkIfIsValidNumber(e, setN)}
             />
             <input
               className="m-2 text-black"
@@ -139,7 +183,7 @@ export default function Page() {
                 </li>
                 <li>
                   <b>P = </b>
-                  {q}
+                  {n}
                 </li>
                 <li>
                   <b>k = </b>
@@ -162,12 +206,13 @@ export default function Page() {
                   {a}
                 </li>
               </ul>
+              {generationWarnings()}
             </div>
           </Boundary>
         </div>
       </div>
 
-      <PrefabTable rows={rows} columns={columns} />
+      {renderTable()}
     </div>
   );
 }

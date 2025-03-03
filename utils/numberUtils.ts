@@ -21,5 +21,6 @@ export function areBothEvenOdd(a: number, b: number): boolean {
 
 export function nextPowerOfTwo(n: number): number {
   if (n <= 1) return 1;
+  console.log(`util: n = ${n}; log2n = ${Math.log2(n)}`);
   return Math.pow(2, Math.ceil(Math.log2(n)));
 }
