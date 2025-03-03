@@ -91,7 +91,7 @@ export default function Page() {
     else if (inputErrors.length > 0) return InputErrorList(inputErrors);
     else if (rows?.length > 0)
       return <PrefabTable rows={rows} columns={columns} />;
-    else return <p>No data to show...</p>;
+    else return <p>Sin datos para mostrar...</p>;
   };
 
   const handleReset = () => {
@@ -121,27 +121,27 @@ export default function Page() {
           <input
             className="m-2 text-black"
             name="seed-1"
-            placeholder="1st Seed"
+            placeholder="Semilla 1 (x_0)"
             value={seed1}
             onChange={(e) => checkIfIsValidNumber(e, setSeed1)}
           />
           <input
             className="m-2 text-black"
             name="seed-2"
-            placeholder="2nd Seed"
+            placeholder="Semilla 2 (x_1)"
             value={seed2}
             onChange={(e) => checkIfIsValidNumber(e, setSeed2)}
           />
           <input
             className="m-2 text-black"
             name="quantity"
-            placeholder="Quantity"
+            placeholder="Cantidad a generar"
             value={quantity}
             onChange={(e) => checkIfIsValidNumber(e, setQuantity)}
           />
-          <Button type="submit">Generate 🎲</Button>
+          <Button type="submit">Generar 🎲</Button>
           <Button type="button" onClick={handleReset}>
-            Reset values 🗑️
+            Limpiar valores 🗑️
           </Button>
         </Form>
       </div>

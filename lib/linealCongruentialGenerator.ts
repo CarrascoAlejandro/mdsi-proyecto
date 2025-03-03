@@ -40,12 +40,12 @@ export function linearCongruentialRNG(
 
   let x1: number;
   let x0 = x_0;
-  for (let i = 0; i < n + 1; i++) {
+  for (let i = 0; i < p + 1; i++) {
     x1 = (a * x0 + c) % m;
     let r_i = x1 / (m - 1);
     x0 = x1;
     run_values.push({
-      key: i.toString(),
+      key: (i + 1).toString(),
       x_i: x1.toString(),
       r_i: r_i.toFixed(nDecimals),
     });

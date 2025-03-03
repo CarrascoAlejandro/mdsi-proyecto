@@ -31,7 +31,7 @@ export const demos: { name: string; items: Item[] }[] = [
       },
     ],
   },
-  {
+  /*{
     name: 'Modelos de Simulación',
     items: [
       {
@@ -82,5 +82,5 @@ export const demos: { name: string; items: Item[] }[] = [
           'Streaming data fetching from the server with React Suspense',
       },
     ],
-  },
+  },*/
 ];

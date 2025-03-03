@@ -80,13 +80,8 @@ export default function Page() {
     else if (inputErrors.length > 0) return InputErrorList(inputErrors);
     else if (rows?.length > 0)
       return <PrefabTable rows={rows} columns={columns} />;
-    else return <p>No data to show...</p>;
+    else return <p>Sin datos para mostrar...</p>;
   };
-
-  /* useEffect(() => {
-    if(!isPrime(parseInt(c, 10))) setInputErrors(['El valor de c debe ser un número primo', ...inputErrors]);
-    else setInputErrors([...inputErrors]);
-  }, [c]) */
 
   const generationWarnings = () => {
     let warnings = [] as string[];
@@ -103,7 +98,7 @@ export default function Page() {
     return (
       <ul>
         {warnings.map((w, index) => (
-          <li key={index}>{w}</li> // Se debe retornar el <li>
+          <li key={index}>{w}</li>
         ))}
       </ul>
     );
@@ -113,15 +108,20 @@ export default function Page() {
     <div className="prose prose-sm prose-invert max-w-none">
       <h1 className="text-xl font-bold">Algoritmo de Congruencial Lineal</h1>
       <ul>
-        <li>Welcome to cuadrados medios</li>
-        <li>Caches responses are fresh for 60 seconds.</li>
+        <li>El algoritmo requiere una semilla que sea un entero positivo.</li>
         <li>
-          Try navigating to each post and noting the timestamp of when the page
-          was rendered. Refresh the page after 60 seconds to trigger a
-          revalidation for the next request. Refresh again to see the
-          revalidated page.
+          El algoritmo requiere un parámetro k, y otro parámetro c que sean
+          coprimos entre sí.
         </li>
-        <li>Note that the fetch cache can be persisted across builds.</li>
+        <li>
+          El algoritmo solo puede generar números en cantidades que sean
+          potencias de dos. Este programa ajustará automáticamente para generar
+          la potencia de 2 inmediata superior al valor deseado.
+        </li>
+        <li>
+          El programa garantiza una secuencia no degenerativa y cíclica siempre
+          que se cumplan las reglas indicadas anteriormente.
+        </li>
       </ul>
       <div className="grid md:grid-cols-3">
         <div className="col-span-2 flex gap-2">
@@ -129,33 +129,33 @@ export default function Page() {
             <input
               className="m-2 text-black"
               name="X_0"
-              placeholder="Initial X_0"
+              placeholder="X_0 inicial"
               value={X_0}
               onChange={(e) => checkIfIsValidNumber(e, setX_0)}
             />
             <input
               className="m-2 text-black"
               name="k"
-              placeholder="Constant k"
+              placeholder="Constante k"
               value={k}
               onChange={(e) => checkIfIsValidNumber(e, setK)}
             />
             <input
               className="m-2 text-black"
               name="quantity"
-              placeholder="Quantity to generate"
+              placeholder="Cantidad a generar"
               value={n}
               onChange={(e) => checkIfIsValidNumber(e, setN)}
             />
             <input
               className="m-2 text-black"
               name="c"
-              placeholder="Constant c"
+              placeholder="Constante c"
               value={c}
               onChange={(e) => checkIfIsValidNumber(e, setC)}
             />
             <br />
-            <label htmlFor="nDecimals-input">Number of Decimals: </label>
+            <label htmlFor="nDecimals-input">Cantidad de decimales: </label>
             <b>0</b>
             <input
               id="nDecimals-input"
@@ -170,7 +170,7 @@ export default function Page() {
             <b>9</b>
             <span> {nDecimals /* TODO: Put a prettier format */}</span>
             <br />
-            <Button type="submit">Generate 🎲</Button>
+            <Button type="submit">Generar 🎲</Button>
           </Form>
         </div>
         <div className="col-span-1">
