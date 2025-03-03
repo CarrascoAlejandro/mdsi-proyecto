@@ -1,6 +1,7 @@
+import { PrefabRow } from '#/ui/tabletable';
 import { areBothEvenOdd, extractCenterDigits } from '#/utils/numberUtils';
 
-export interface medianSquaresRow {
+export interface medianSquaresRow extends PrefabRow {
   key: string;
   x_i: string;
   y_i: string;

@@ -7,7 +7,7 @@ interface PrefabColumn {
 
 export interface PrefabRow {
   key: string;
-  [key: string]: string; // Allows dynamic additional columns
+  [key: string]: string | number; // Allows dynamic additional columns
 }
 
 export interface PrefabTableProps {

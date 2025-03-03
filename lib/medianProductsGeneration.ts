@@ -1,6 +1,7 @@
+import { PrefabRow } from '#/ui/tabletable';
 import { extractCenterDigits } from '#/utils/numberUtils';
 
-export interface medianProductsRow {
+export interface medianProductsRow extends PrefabRow {
   key: string;
   x_i: string;
   y_i: string;

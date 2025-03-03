@@ -1,6 +1,7 @@
+import { PrefabRow } from '#/ui/tabletable';
 import { nextPowerOfTwo } from '#/utils/numberUtils';
 
-export interface productCongruentialRow {
+export interface productCongruentialRow extends PrefabRow {
   key: string;
   x_i: string;
   r_i: string;
