@@ -117,33 +117,56 @@ export default function Page() {
         </li>
       </ul>
       <div className="flex gap-2">
-        <Form action="empty" onSubmit={handleSubmit}>
-          <input
-            className="m-2 text-black"
-            name="seed-1"
-            placeholder="Semilla 1 (x_0)"
-            value={seed1}
-            onChange={(e) => checkIfIsValidNumber(e, setSeed1)}
-          />
-          <input
-            className="m-2 text-black"
-            name="seed-2"
-            placeholder="Semilla 2 (x_1)"
-            value={seed2}
-            onChange={(e) => checkIfIsValidNumber(e, setSeed2)}
-          />
-          <input
-            className="m-2 text-black"
-            name="quantity"
-            placeholder="Cantidad a generar"
-            value={quantity}
-            onChange={(e) => checkIfIsValidNumber(e, setQuantity)}
-          />
-          <Button type="submit">Generar 🎲</Button>
-          <Button type="button" onClick={handleReset}>
-            Limpiar valores 🗑️
-          </Button>
-        </Form>
+        <div className="flex gap-2 md:col-span-2">
+          <Form
+            action="empty"
+            onSubmit={handleSubmit}
+            className="grid px-3 md:grid-cols-5"
+          >
+            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+              Semilla 1 (x_0):
+            </span>
+            <span className="col-span-3">
+              <input
+                className="m-2 text-black"
+                name="seed-1"
+                placeholder="Semilla 1 (x_0)"
+                value={seed1}
+                onChange={(e) => checkIfIsValidNumber(e, setSeed1)}
+              />
+            </span>
+            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+              Semilla 2 (x_1):
+            </span>
+            <span className="col-span-3">
+              <input
+                className="m-2 text-black"
+                name="seed-2"
+                placeholder="Semilla 2 (x_1)"
+                value={seed2}
+                onChange={(e) => checkIfIsValidNumber(e, setSeed2)}
+              />
+            </span>
+            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+              Cantidad a generar:
+            </span>
+            <span className="col-span-3">
+              <input
+                className="m-2 text-black"
+                name="quantity"
+                placeholder="Cantidad a generar"
+                value={quantity}
+                onChange={(e) => checkIfIsValidNumber(e, setQuantity)}
+              />
+            </span>
+            <span className="col-span-5">
+              <Button type="submit">Generar 🎲</Button>
+              <Button type="button" onClick={handleReset}>
+                Limpiar valores 🗑️
+              </Button>
+            </span>
+          </Form>
+        </div>
       </div>
       {renderDegeneration()}
       {renderTable()}

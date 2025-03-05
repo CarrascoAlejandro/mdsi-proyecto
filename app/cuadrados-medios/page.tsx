@@ -93,26 +93,44 @@ export default function Page() {
         </li>
       </ul>
       <div className="flex gap-2">
-        <Form action="empty" onSubmit={handleSubmit}>
-          <input
-            className="m-2 text-black"
-            name="seed"
-            placeholder="Semilla x_0"
-            value={seed}
-            onChange={(e) => checkIfIsValidNumber(e, setSeed)}
-          />
-          <input
-            className="m-2 text-black"
-            name="quantity"
-            placeholder="Cantidad a generar"
-            value={quantity}
-            onChange={(e) => checkIfIsValidNumber(e, setQuantity)}
-          />
-          <Button type="submit">Generar 🎲</Button>
-          <Button type="button" onClick={handleReset}>
-            Limpiar valores 🗑️
-          </Button>
-        </Form>
+        <div className="flex gap-2 md:col-span-2">
+          <Form
+            action="empty"
+            onSubmit={handleSubmit}
+            className="grid px-3 md:grid-cols-5"
+          >
+            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+              Semilla x_0:
+            </span>
+            <span className="col-span-3">
+              <input
+                className="m-2 text-black"
+                name="seed"
+                placeholder="Semilla x_0"
+                value={seed}
+                onChange={(e) => checkIfIsValidNumber(e, setSeed)}
+              />
+            </span>
+            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+              Cantidad a generar:
+            </span>
+            <span className="col-span-3">
+              <input
+                className="m-2 text-black"
+                name="quantity"
+                placeholder="Cantidad a generar"
+                value={quantity}
+                onChange={(e) => checkIfIsValidNumber(e, setQuantity)}
+              />
+            </span>
+            <span className="col-span-5">
+              <Button type="submit">Generar 🎲</Button>
+              <Button type="button" onClick={handleReset}>
+                Limpiar valores 🗑️
+              </Button>
+            </span>
+          </Form>
+        </div>
       </div>
       {renderDegeneration()}
       {renderTable()}

@@ -120,46 +120,71 @@ export default function Page() {
         </li>
       </ul>
       <div className="grid md:grid-cols-3">
-        <div className="col-span-2 flex gap-2">
-          <Form action="empty" onSubmit={handleSubmit}>
-            <input
-              className="m-2 text-black"
-              name="X_0"
-              placeholder="X_0 inicial"
-              value={X_0}
-              onChange={(e) => checkIfIsValidNumber(e, setX_0)}
-            />
-            <input
-              className="m-2 text-black"
-              name="k"
-              placeholder="Constante k"
-              value={k}
-              onChange={(e) => checkIfIsValidNumber(e, setK)}
-            />
-            <input
-              className="m-2 text-black"
-              name="quantity"
-              placeholder="Candidad a generar"
-              value={n}
-              onChange={(e) => checkIfIsValidNumber(e, setN)}
-            />
+        <div className="flex gap-2 md:col-span-2">
+          <Form
+            action="empty"
+            onSubmit={handleSubmit}
+            className="grid px-3 md:grid-cols-5"
+          >
+            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+              Semilla X_0:
+            </span>
+            <span className="col-span-3">
+              <input
+                className="m-2 text-black"
+                name="X_0"
+                placeholder="X_0 inicial"
+                value={X_0}
+                onChange={(e) => checkIfIsValidNumber(e, setX_0)}
+              />
+            </span>
+            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+              Constante k:
+            </span>
+            <span className="col-span-3">
+              <input
+                className="m-2 text-black"
+                name="k"
+                placeholder="Constante k"
+                value={k}
+                onChange={(e) => checkIfIsValidNumber(e, setK)}
+              />
+            </span>
+            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+              Cantidad a generar:
+            </span>
+            <span className="col-span-3">
+              <input
+                className="m-2 text-black"
+                name="quantity"
+                placeholder="Cantidad a generar"
+                value={n}
+                onChange={(e) => checkIfIsValidNumber(e, setN)}
+              />
+            </span>
+            <span className="col-span-5">
+              <label
+                htmlFor="nDecimals-input"
+                className="text-right text-sm font-medium"
+              >
+                Cantidad de decimales:{' '}
+              </label>
+              <b>0</b>
+              <input
+                id="nDecimals-input"
+                className="m-2 text-black"
+                name="decimal"
+                type="range"
+                min={0}
+                max={9}
+                value={nDecimals}
+                onChange={(e) => setNDecimals(Number(e.target.value))}
+              />
+              <b>9</b>
+              <span> {nDecimals /* TODO: Put a prettier format */}</span>
+            </span>
             <br />
-            <label htmlFor="nDecimals-input">Cantidad de Decimales: </label>
-            <b>0</b>
-            <input
-              id="nDecimals-input"
-              className="m-2 text-black"
-              name="decimal"
-              type="range"
-              min={0}
-              max={9}
-              value={nDecimals}
-              onChange={(e) => setNDecimals(Number(e.target.value))}
-            />
-            <b>9</b>
-            <span> {nDecimals /* TODO: Put a prettier format */}</span>
-            <br />
-            <div className="m-2">
+            <div className="col-span-5 m-2">
               <Boundary labels={['Formula de a']} size="small">
                 <input
                   type="radio"
@@ -194,7 +219,9 @@ export default function Page() {
               </Boundary>
             </div>
             <br />
-            <Button type="submit">Generar 🎲</Button>
+            <span className="col-span-5">
+              <Button type="submit">Generar 🎲</Button>
+            </span>
           </Form>
         </div>
         <div className="col-span-1">
