@@ -7,6 +7,9 @@ export default function Page() {
       <h1 className="text-xl font-medium text-gray-300">
         Modelado, Dinámica de Sistemas y Simulación
       </h1>
+      <h3 className="text-md text-gray-500">
+        <i>Proyecto desarrollado por Alejandro Carrasco</i>
+      </h3>
 
       <div className="space-y-10 text-white">
         {demos.map((section) => {

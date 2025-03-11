@@ -16,20 +16,20 @@ export default function Byline() {
         <div className="text-sm text-gray-400">
           <a
             className="underline decoration-dotted underline-offset-4 transition-colors hover:text-gray-300"
-            href="https://github.com/vercel/app-playground"
+            href="https://github.com/CarrascoAlejandro/mdsi-proyecto"
             target="_blank"
             rel="noreferrer"
           >
-            View code
+            Ver código
           </a>
-          {' or '}
+          {' desarrollado por '}
           <a
             className="underline decoration-dotted underline-offset-4 transition-colors hover:text-gray-300"
-            href="https://vercel.com/templates/next.js/app-directory"
+            href="https://github.com/CarrascoAlejandro"
             target="_blank"
             rel="noreferrer"
           >
-            deploy your own
+            Alejandro Carrasco
           </a>
         </div>
       </div>
