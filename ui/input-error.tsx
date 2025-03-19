@@ -10,7 +10,7 @@ export default function InputErrorList(errors: string[]) {
     <div className="m-3">
       <Boundary labels={['Error']} color="pink">
         <div className="space-y-4">
-          <div className="prose-lg font-bold ">Error in the input:</div>
+          <div className="prose-lg font-bold ">Error en la entrada:</div>
           {formatErrorMessages}
         </div>
       </Boundary>
