@@ -33,13 +33,30 @@ export default function Page() {
   const [degeneration, setDegeneration] = useState(-1);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    setInputErrors([]);
     event.preventDefault();
+    let errors = [];
     setLoading(true);
 
     const fSeed = parseInt(seed, 10);
     const fQuantity = parseInt(quantity, 10);
     const D = seed.length;
+    console.log('errors1', inputErrors);
+    console.log('fSeed', fSeed);
+    console.log('fQuantity', fQuantity);
+    // validate fields to not be empty
+    if (isNaN(fSeed)) errors.push('Complete el campo de la semilla');
+    if (isNaN(fQuantity))
+      errors.push('Complete el campo de la cantidad a generar');
+
+    if (fSeed <= 0) errors.push('El valor de la semilla debe ser mayor a 0');
+
+    if (errors.length > 0) {
+      setInputErrors([...errors]);
+      setLoading(false);
+      return;
+    } else {
+      setInputErrors([]);
+    }
 
     const generatedRows = await medianSquaresRNG(fSeed, D, fQuantity);
     setDegeneration(findDegeneration(generatedRows));

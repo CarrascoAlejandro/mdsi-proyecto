@@ -22,8 +22,10 @@ export async function medianProductsRNG(
   console.log('received values\n', [seed1, seed2, D, n]);
 
   for (let i = 0; i < n; i++) {
+    console.log('x_last:', x_last, 'x_current:', x_current);
     let y = x_last * x_current;
     let op = extractCenterDigits(y, D);
+    x_last = x_current;
     x_current = parseInt(op, 10);
     results.push({
       key: i.toString(),
@@ -32,7 +34,6 @@ export async function medianProductsRNG(
       operation: op,
       r_i: (x_current / Math.pow(10, D)).toString(), // Normalize to [0,1]
     });
-    x_last = x_current;
   }
 
   console.log('median product rng results:\n', results);

@@ -48,7 +48,19 @@ export default function Page() {
     const fK = parseInt(k, 10);
     const fC = parseInt(c, 10);
 
-    if (!isPrime(fC))
+    // validate fields to not be empty
+    let emptyFieldsErrors = [];
+    if (isNaN(fSeed)) emptyFieldsErrors.push('Complete el campo de la semilla');
+    if (isNaN(fQuantity))
+      emptyFieldsErrors.push('Complete el campo de la cantidad a generar');
+    if (isNaN(fK))
+      emptyFieldsErrors.push('Complete el campo de la constante k');
+    if (isNaN(fC))
+      emptyFieldsErrors.push('Complete el campo de la constante c');
+
+    if (emptyFieldsErrors.length > 0) {
+      setInputErrors([...emptyFieldsErrors]);
+    } else if (!isPrime(fC))
       setInputErrors([
         'El valor de c debe ser un número primo',
         ...inputErrors,
@@ -95,12 +107,16 @@ export default function Page() {
       warnings.push(`c = ${c} no es un número primo`);
     }
 
+    if (warnings.length === 0) return;
     return (
-      <ul>
-        {warnings.map((w, index) => (
-          <li key={index}>{w}</li>
-        ))}
-      </ul>
+      <>
+        <h5>ADVERTENCIAS:</h5>
+        <ul>
+          {warnings.map((w, index) => (
+            <li key={index}>{w}</li>
+          ))}
+        </ul>
+      </>
     );
   };
 
@@ -235,7 +251,7 @@ export default function Page() {
                   {a}
                 </li>
               </ul>
-              {generationWarnings()}
+              <div className="text-orange-500">{generationWarnings()}</div>
             </div>
           </Boundary>
         </div>

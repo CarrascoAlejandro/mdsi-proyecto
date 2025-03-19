@@ -1,6 +1,7 @@
 import { Boundary } from './boundary';
 
 export default function InputErrorList(errors: string[]) {
+  console.log(errors);
   const formatErrorMessages = errors.map((e: string) => {
     return <p className="text-sm">{e}</p>;
   });

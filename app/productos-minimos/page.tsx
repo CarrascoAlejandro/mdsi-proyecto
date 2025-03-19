@@ -58,7 +58,22 @@ export default function Page() {
     const fQuantity = parseInt(quantity, 10);
     const D = seed1.length;
 
-    if (inputErrors.length === 0) {
+    // validate fields to not be empty
+    let emptyFieldsErrors = [];
+    if (isNaN(fSeed1))
+      emptyFieldsErrors.push('Complete el campo de la semilla 1');
+    if (isNaN(fSeed2))
+      emptyFieldsErrors.push('Complete el campo de la semilla 2');
+    if (isNaN(fQuantity))
+      emptyFieldsErrors.push('Complete el campo de la cantidad a generar');
+    if (isNaN(D))
+      emptyFieldsErrors.push(
+        'Complete el campo de la longitud de las semillas',
+      );
+
+    if (emptyFieldsErrors.length > 0) {
+      setInputErrors([...emptyFieldsErrors]);
+    } else if (inputErrors.length === 0) {
       const generatedRows = await medianProductsRNG(
         fSeed1,
         fSeed2,

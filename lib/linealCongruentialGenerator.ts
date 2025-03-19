@@ -43,6 +43,7 @@ export function linearCongruentialRNG(
   let x0 = x_0;
   for (let i = 0; i < p + 1; i++) {
     x1 = (a * x0 + c) % m;
+    console.log(`x${i + 1} = (${a} * ${x0} + ${c}) mod ${m} = ${x1}`);
     let r_i = x1 / (m - 1);
     x0 = x1;
     run_values.push({

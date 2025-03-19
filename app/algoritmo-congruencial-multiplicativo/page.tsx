@@ -46,7 +46,17 @@ export default function Page() {
     const fQuantity = parseInt(n, 10);
     const fK = parseInt(k, 10);
 
-    if (fSeed % 2 === 0)
+    // validate fields to not be empty
+    let emptyFieldsErrors = [];
+    if (isNaN(fSeed)) emptyFieldsErrors.push('Complete el campo de la semilla');
+    if (isNaN(fQuantity))
+      emptyFieldsErrors.push('Complete el campo de la cantidad a generar');
+    if (isNaN(fK))
+      emptyFieldsErrors.push('Complete el campo de la constante k');
+
+    if (emptyFieldsErrors.length > 0) {
+      setInputErrors([...emptyFieldsErrors]);
+    } else if (fSeed % 2 === 0)
       setInputErrors(['El valor de x_0 debe ser IMPAR', ...inputErrors]);
 
     if (inputErrors.length > 0) {
@@ -80,22 +90,27 @@ export default function Page() {
 
   const generationWarnings = () => {
     let warnings = [] as string[];
+    if (parseInt(X_0) % 2 === 0 && !Number.isNaN(parseInt(X_0))) {
+      warnings.push(`X_0 = ${X_0} debería ser impar`);
+    }
     if (!isPowerOfTwo(parseInt(n)) && !Number.isNaN(parseInt(n))) {
       const nn = nextPowerOfTwo(parseInt(n));
       warnings.push(
         `Se generarán ${nn} valores para alcanzar una potencia de 2`,
       );
     }
-    if (parseInt(X_0) % 2 === 0 && !Number.isNaN(parseInt(n))) {
-      warnings.push(`X_0 = ${X_0} debería ser impar`);
-    }
+    console.log('warnings:', warnings);
 
+    if (warnings.length === 0) return;
     return (
-      <ul>
-        {warnings.map((w, index) => (
-          <li key={index}>{w}</li>
-        ))}
-      </ul>
+      <>
+        <h5>ADVERTENCIAS:</h5>
+        <ul>
+          {warnings.map((w, index) => (
+            <li key={index}>{w}</li>
+          ))}
+        </ul>
+      </>
     );
   };
 
@@ -257,7 +272,7 @@ export default function Page() {
                   {a}
                 </li>
               </ul>
-              {generationWarnings()}
+              <div className="text-orange-500">{generationWarnings()}</div>
             </div>
           </Boundary>
         </div>
