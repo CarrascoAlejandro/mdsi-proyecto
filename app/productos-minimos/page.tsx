@@ -41,7 +41,7 @@ export default function Page() {
   const [degeneration, setDegeneration] = useState(-1);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    setInputErrors([]);
+    let errors = [];
     event.preventDefault();
     setLoading(true);
 
@@ -59,20 +59,16 @@ export default function Page() {
     const D = seed1.length;
 
     // validate fields to not be empty
-    let emptyFieldsErrors = [];
-    if (isNaN(fSeed1))
-      emptyFieldsErrors.push('Complete el campo de la semilla 1');
-    if (isNaN(fSeed2))
-      emptyFieldsErrors.push('Complete el campo de la semilla 2');
+    if (isNaN(fSeed1)) errors.push('Complete el campo de la semilla 1');
+    if (isNaN(fSeed2)) errors.push('Complete el campo de la semilla 2');
     if (isNaN(fQuantity))
-      emptyFieldsErrors.push('Complete el campo de la cantidad a generar');
+      errors.push('Complete el campo de la cantidad a generar');
     if (isNaN(D))
-      emptyFieldsErrors.push(
-        'Complete el campo de la longitud de las semillas',
-      );
+      errors.push('Complete el campo de la longitud de las semillas');
 
-    if (emptyFieldsErrors.length > 0) {
-      setInputErrors([...emptyFieldsErrors]);
+    if (errors.length > 0) {
+      setInputErrors([...errors]);
+      setDegeneration(-1);
     } else if (inputErrors.length === 0) {
       const generatedRows = await medianProductsRNG(
         fSeed1,

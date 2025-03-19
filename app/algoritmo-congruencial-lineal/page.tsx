@@ -39,7 +39,7 @@ export default function Page() {
   ];
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    setInputErrors([]);
+    let errors = [];
     event.preventDefault();
     setLoading(true);
 
@@ -49,26 +49,20 @@ export default function Page() {
     const fC = parseInt(c, 10);
 
     // validate fields to not be empty
-    let emptyFieldsErrors = [];
-    if (isNaN(fSeed)) emptyFieldsErrors.push('Complete el campo de la semilla');
+    if (isNaN(fSeed)) errors.push('Complete el campo de la semilla');
     if (isNaN(fQuantity))
-      emptyFieldsErrors.push('Complete el campo de la cantidad a generar');
-    if (isNaN(fK))
-      emptyFieldsErrors.push('Complete el campo de la constante k');
-    if (isNaN(fC))
-      emptyFieldsErrors.push('Complete el campo de la constante c');
+      errors.push('Complete el campo de la cantidad a generar');
+    if (isNaN(fK)) errors.push('Complete el campo de la constante k');
+    if (isNaN(fC)) errors.push('Complete el campo de la constante c');
 
-    if (emptyFieldsErrors.length > 0) {
-      setInputErrors([...emptyFieldsErrors]);
-    } else if (!isPrime(fC))
-      setInputErrors([
-        'El valor de c debe ser un número primo',
-        ...inputErrors,
-      ]);
+    if (!isPrime(fC)) errors.push('El valor de c debe ser un número primo');
 
-    if (inputErrors.length > 0) {
+    if (errors.length > 0) {
+      setInputErrors([...errors]);
       setLoading(false);
       return;
+    } else {
+      setInputErrors([]);
     }
 
     const generation = await linearCongruentialRNG(

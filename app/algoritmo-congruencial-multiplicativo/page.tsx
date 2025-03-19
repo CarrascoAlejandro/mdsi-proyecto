@@ -38,7 +38,7 @@ export default function Page() {
   ];
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    setInputErrors([]);
+    let errors = [];
     event.preventDefault();
     setLoading(true);
 
@@ -47,21 +47,19 @@ export default function Page() {
     const fK = parseInt(k, 10);
 
     // validate fields to not be empty
-    let emptyFieldsErrors = [];
-    if (isNaN(fSeed)) emptyFieldsErrors.push('Complete el campo de la semilla');
+    if (isNaN(fSeed)) errors.push('Complete el campo de la semilla');
     if (isNaN(fQuantity))
-      emptyFieldsErrors.push('Complete el campo de la cantidad a generar');
-    if (isNaN(fK))
-      emptyFieldsErrors.push('Complete el campo de la constante k');
+      errors.push('Complete el campo de la cantidad a generar');
+    if (isNaN(fK)) errors.push('Complete el campo de la constante k');
 
-    if (emptyFieldsErrors.length > 0) {
-      setInputErrors([...emptyFieldsErrors]);
-    } else if (fSeed % 2 === 0)
-      setInputErrors(['El valor de x_0 debe ser IMPAR', ...inputErrors]);
+    if (fSeed % 2 === 0) errors.push('El valor de x_0 debe ser IMPAR');
 
-    if (inputErrors.length > 0) {
+    if (errors.length > 0) {
+      setInputErrors([...errors]);
       setLoading(false);
       return;
+    } else {
+      setInputErrors([]);
     }
 
     const generation = await productCongruentialRNG(

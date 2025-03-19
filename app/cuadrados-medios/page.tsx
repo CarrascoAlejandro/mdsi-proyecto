@@ -53,6 +53,7 @@ export default function Page() {
     if (errors.length > 0) {
       setInputErrors([...errors]);
       setLoading(false);
+      setDegeneration(-1);
       return;
     } else {
       setInputErrors([]);
