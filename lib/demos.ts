@@ -31,47 +31,49 @@ export const demos: { name: string; items: Item[] }[] = [
       },
     ],
   },
-  /*{
+  {
     name: 'Modelos de Simulación',
     items: [
       {
         name: 'Calculo DPF',
         slug: 'calculo-dpf',
         description:
-          'Create meaningful Loading UI for specific parts of an app',
+          'Calcula la ganancia esperada de realizar un Depósito a PLazo Fijo',
       },
       {
         name: 'Estimación de Población',
         slug: 'estimacion-de-poblacion',
-        description: 'Create Error UI for specific parts of an app',
+        description: 'Simula el crecimiento de una población',
       },
       {
         name: 'Juego de Craps',
         slug: 'juego-de-craps',
-        description: 'Create Not Found UI for specific parts of an app',
+        description: 'Simula un juego de azar',
       },
       {
         name: 'Problema de Maximización',
         slug: 'problema-de-maximizacion',
-        description: 'Create Not Found UI for specific parts of an app',
+        description:
+          'Simula la identificación de la solución de una programación entera',
       },
       {
         name: 'Llegada de Clientes',
         slug: 'llegada-de-clientes',
-        description: 'Create Not Found UI for specific parts of an app',
+        description:
+          'Simula la llegada de clientes a una tienda, y la cantidad de productos que compran',
       },
       {
         name: 'Problema de Huevos y Pollos',
         slug: 'problema-de-huevos-y-pollos',
-        description: 'Create Not Found UI for specific parts of an app',
-      },
+        description: 'Simula la producción de huevos y pollos en una granja',
+      } /*,
       {
         name: 'Demanda y Pedido de Azúcar',
         slug: 'demanda-y-pedido-de-azucar',
         description: 'Create Not Found UI for specific parts of an app',
-      },
+      },*/,
     ],
-  },
+  } /*,
   {
     name: 'Proyecto Final',
     items: [
@@ -82,5 +84,5 @@ export const demos: { name: string; items: Item[] }[] = [
           'Streaming data fetching from the server with React Suspense',
       },
     ],
-  },*/
+  },*/,
 ];
