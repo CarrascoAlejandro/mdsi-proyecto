@@ -1,14 +1,7 @@
 import { PrefabRow } from '#/ui/tabletable';
 
-export interface integerProgrammingRow extends PrefabRow {
-  key: string;
-  x1: number;
-  x2: number;
-  z: number;
-}
-
 // Define the interface for the result rows
-export interface IntegerProgrammingRow {
+export interface IntegerProgrammingRow extends PrefabRow {
   key: string;
   x1: number;
   x2: number;
@@ -19,6 +12,8 @@ export function integerProgrammingSimulation(
   N: number,
   randSeed1: number,
   randSeed2: number,
+  a1: number,
+  a2: number,
   c11: number,
   c12: number,
   c1b: number,
@@ -58,7 +53,7 @@ export function integerProgrammingSimulation(
       continue;
     }
 
-    const Z_aux = 2.5 * x1_rand + 2 * x2_rand;
+    const Z_aux = c11 * x1_rand + c12 * x2_rand + c21 * x1_rand + c22 * x2_rand;
     if (Z_aux < Z) {
       Z = Z_aux;
       x1 = x1_rand;
@@ -81,7 +76,7 @@ export function integerProgrammingSimulation(
 }
 
 // Example usage
-const simulationResult = integerProgrammingSimulation(
+/* const simulationResult = integerProgrammingSimulation(
   1000000,
   123456789,
   987654321,
@@ -92,4 +87,4 @@ const simulationResult = integerProgrammingSimulation(
   5,
   180,
 );
-console.log(simulationResult);
+console.log(simulationResult); */
