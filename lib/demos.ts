@@ -66,12 +66,12 @@ export const demos: { name: string; items: Item[] }[] = [
         name: 'Problema de Huevos y Pollos',
         slug: 'problema-de-huevos-y-pollos',
         description: 'Simula la producción de huevos y pollos en una granja',
-      } /*,
+      },
       {
         name: 'Demanda y Pedido de Azúcar',
         slug: 'demanda-y-pedido-de-azucar',
         description: 'Create Not Found UI for specific parts of an app',
-      },*/,
+      },
     ],
   } /*,
   {

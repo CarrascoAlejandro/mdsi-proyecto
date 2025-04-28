@@ -17,3 +17,13 @@ export const checkIfIsValidPercentage = (
     setState(value);
   }
 };
+
+export const checkIfIsValidDecimal = (
+  event: { target: { value: any } },
+  setState: (arg0: any) => void,
+) => {
+  const value = event.target.value;
+  if (/^(\d+(\.\d*)?)$/.test(value)) {
+    setState(value);
+  }
+};

@@ -9,14 +9,14 @@ export interface diceGameRow extends PrefabRow {
   profits: number;
 }
 
-function simulateGame(
+export function simulateGame(
   throws: number,
   cost: number,
   reward: number,
   randSeed1: number,
   randSeed2: number,
 ): {
-  simulationSummary: diceGameRow[];
+  simulationDetails: diceGameRow[];
   totalEarnings: number;
   gamesWon: number;
   winPercentage: number;
@@ -47,7 +47,7 @@ function simulateGame(
 
     // Record game result
     games.push({
-      key: i.toString(),
+      key: (i + 1).toString(),
       dice1: dice1,
       dice2: dice2,
       sumDice: sum,
@@ -61,7 +61,7 @@ function simulateGame(
   const winPercentage = (gamesWon / throws) * 100;
 
   return {
-    simulationSummary: games,
+    simulationDetails: games,
     totalEarnings: earnings,
     gamesWon: gamesWon,
     winPercentage: winPercentage,
@@ -69,5 +69,5 @@ function simulateGame(
 }
 
 // Example usage:
-const result = simulateGame(10, 2, 5, 423, 321);
-console.log(result);
+//const result = simulateGame(10, 2, 5, 423, 321);
+//console.log(result);
