@@ -91,6 +91,17 @@ export default function Page() {
   return (
     <div className="prose prose-sm prose-invert max-w-none">
       <h1 className="text-xl font-bold">Estimación de Población</h1>
+      <ul>
+        <li>
+          A partir de la población inicial y las tasas de natalidad y
+          mortalidad, determina la población en un rango de años.
+        </li>
+        <li>La natalidad y mortalidad se expresan como porcentajes anuales.</li>
+        <li>
+          La población incrementa según la tasa de natalidad y decrece según la
+          tasa de mortalidad.
+        </li>
+      </ul>
       <div className="grid md:grid-cols-3">
         <div className="col-span-2 flex gap-2">
           <Boundary labels={['Simulation Parameters']} size="small">

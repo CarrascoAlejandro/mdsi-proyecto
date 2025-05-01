@@ -33,18 +33,20 @@ export default function Page() {
   return (
     <div className="prose prose-sm prose-invert max-w-none">
       <h1 className="text-xl font-bold">
-        Algoritmo de Congruencial Multiplicativo
+        Calculadora de Depósito a Plazo Fijo (DPF)
       </h1>
       <ul>
-        <li>Welcome to cuadrados medios</li>
-        <li>Caches responses are fresh for 60 seconds.</li>
         <li>
-          Try navigating to each post and noting the timestamp of when the page
-          was rendered. Refresh the page after 60 seconds to trigger a
-          revalidation for the next request. Refresh again to see the
-          revalidated page.
+          A partir de un capital inicial determina las ganancias de un DPF
         </li>
-        <li>Note that the fetch cache can be persisted across builds.</li>
+        <li>
+          El interés es compuesto y se calcula anualmente. El interés se calcula
+          sobre el capital inicial.
+        </li>
+        <li>
+          El interés se calcula al final de cada año y se suma al capital
+          inicial.
+        </li>
       </ul>
       <div className="grid md:grid-cols-3">
         <div className="col-span-2 flex gap-2">

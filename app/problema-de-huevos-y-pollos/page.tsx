@@ -234,22 +234,26 @@ export default function Page() {
 
   return (
     <div className="prose prose-sm prose-invert max-w-none">
-      <h1 className="text-xl font-bold">Simulación de un Juego de Suma 7</h1>
+      <h1 className="text-xl font-bold">
+        Simulación de una granja de huevos y pollos
+      </h1>
       <ul>
         <li>
-          La simulación consiste en lanzar dos dados y ver si la suma es 7.
+          La simulación consiste en una granja que produce en promedio N huevos
+          cada día.
         </li>
         <li>
-          en cada lanzamiento, el jugador gana si la suma es 7 y la casa paga
-          una recompensa.
+          Cada huevo tiene una probabilidad de romperse, de ser un pollo o de
+          ser un huevo bueno para la venta.
         </li>
         <li>
-          El jugador pierde (la casa gana) si la suma no es 7 y la casa cobra
-          una tarifa de entrada.
+          Cada pollo tiene una probabilidad de morir y de vivir. Solo se pueden
+          vender los pollos vivos.
         </li>
         <li>
-          El usuario puede elegir la cantidad de juegos a simular y los valores
-          de la tarifa de entrada y la recompensa.
+          El objetivo es determinar el ingreso promedio de la granja, haciendo
+          varias corridas de la simulación. Donde cada simulación simula un
+          plazo de tiempo en días.
         </li>
       </ul>
       <div className="flex gap-2">

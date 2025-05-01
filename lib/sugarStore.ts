@@ -1,7 +1,7 @@
 import { PrefabRow } from '#/ui/tabletable';
 
 // Define the interface for the result rows
-export interface SugarStoreRow {
+export interface SugarStoreRow extends PrefabRow {
   key: string;
   day: number;
   sugarStock: number;
@@ -17,6 +17,17 @@ export interface SugarStoreRow {
   todayProfit: number;
 }
 
+export interface SugarStoreSimulationSummary {
+  totalProfit: number;
+  totalKgSold: number;
+  totalSalesLost: number;
+  averageIncomeDaily: number;
+  averageCostDaily: number;
+  averageKgSoldDaily: number;
+  averageDailyDemand: number;
+  averageTimeToDelivery: number;
+}
+
 export function simulateSugarStore(
   maximumDays: number,
   maximumStock: number,
@@ -30,7 +41,10 @@ export function simulateSugarStore(
   averageDemand: number,
   randSeed1: number,
   randSeed2: number,
-): SugarStoreRow[] {
+): {
+  simulationResults: SugarStoreRow[];
+  simulationSummary: SugarStoreSimulationSummary;
+} {
   // Helper function to create a seeded random number generator
   function seededRandom(seed: number): () => number {
     let x = Math.sin(seed++) * 10000;
@@ -118,10 +132,28 @@ export function simulateSugarStore(
     });
   }
 
-  return results;
+  return {
+    simulationResults: results,
+    simulationSummary: {
+      totalProfit: results.reduce((acc, row) => acc + row.todayProfit, 0),
+      totalKgSold: results.reduce((acc, row) => acc + row.dailySales, 0),
+      totalSalesLost: results.reduce((acc, row) => acc + row.lostSales, 0),
+      averageIncomeDaily:
+        results.reduce((acc, row) => acc + row.todayIncome, 0) / maximumDays,
+      averageCostDaily:
+        results.reduce((acc, row) => acc + row.todayCost, 0) / maximumDays,
+      averageKgSoldDaily:
+        results.reduce((acc, row) => acc + row.dailySales, 0) / maximumDays,
+      averageDailyDemand:
+        results.reduce((acc, row) => acc + row.todayDemand, 0) / maximumDays,
+      averageTimeToDelivery:
+        results.reduce((acc, row) => acc + (row.timeToDelivery || 0), 0) /
+        maximumDays,
+    },
+  };
 }
 
-// Example usage
+/*// Example usage
 const simulationResults = simulateSugarStore(
   27, // maximumDays
   700, // maximumStock
@@ -137,4 +169,4 @@ const simulationResults = simulateSugarStore(
   200, // randSeed2
 );
 
-console.log(simulationResults);
+console.log(simulationResults);*/
