@@ -36,8 +36,12 @@ export function simulateEggsAndChickens(
   randSeed2: number,
   randSeed3: number,
 ): {
-  dayResults: EggsAndChickensDayRow[];
+  globalResults: EggsAndChickensRunRow[];
   dayGroupedResults: { [key: number]: EggsAndChickensDayRow[] };
+  averageEggsProduced: number;
+  averageEggsSold: number;
+  averageChicksSold: number;
+  averageIncome: number;
 } {
   // Helper function to create a seeded random number generator
   function seededRandom(seed: number): () => number {
@@ -178,9 +182,16 @@ export function simulateEggsAndChickens(
     });
   }
 
-  return { dayResults: runSimulationDay(), dayGroupedResults };
+  return {
+    globalResults: [],
+    dayGroupedResults, // FIXME: Return the correct results
+    averageEggsProduced: 0, // FIXME: Calculate the correct average
+    averageEggsSold: 0, // FIXME: Calculate the correct average
+    averageChicksSold: 0, // FIXME: Calculate the correct average
+    averageIncome: 0, // FIXME: Calculate the correct average
+  };
 }
-
+/*
 // Example usage
 const result = simulateEggsAndChickens(
   30, // maxDays
@@ -197,4 +208,4 @@ const result = simulateEggsAndChickens(
   789, // randSeed3
 );
 
-console.log(result);
+console.log(result);*/
