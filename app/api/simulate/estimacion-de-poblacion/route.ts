@@ -9,10 +9,10 @@ export async function POST(req: NextRequest) {
   //console.log({ startYear, lastYear, initPopulation, natalityRate, mortalityRate });
 
   const columns = [
-    { name: 'year', label: 'Year' },
-    { name: 'births', label: 'Births' },
-    { name: 'deaths', label: 'Deaths' },
-    { name: 'population', label: 'Population' },
+    { name: 'year', label: 'Año' },
+    { name: 'births', label: 'Nacimientos' },
+    { name: 'deaths', label: 'Muertes' },
+    { name: 'population', label: 'Población' },
   ];
 
   // Convert input values to numbers

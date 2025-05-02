@@ -10,25 +10,58 @@ import {
   checkIfIsValidPercentage,
 } from '#/utils/validators';
 import { Boundary } from '#/ui/boundary';
+import { dpfRow, calculateDPF } from '#/lib/calculateDPF';
 
 export default function Page() {
+  const [rows, setRows] = React.useState<dpfRow[]>([]);
+
+  const columns = [
+    { name: 'year', label: 'Año' },
+    { name: 'interest', label: 'Interés' },
+    { name: 'capital', label: 'Capital' },
+  ];
+
+  // params
   const [years, setYears] = React.useState('');
   const [interest, setinterest] = React.useState('');
   const [initCapital, setInitCapital] = React.useState('');
 
-  const rows = [
-    { key: '1', year: '2024', interest: '50.00', capital: '1050.00' },
-    { key: '2', year: '2025', interest: '52.50', capital: '1102.50' },
-    { key: '3', year: '2026', interest: '55.13', capital: '1157.63' },
-    { key: '4', year: '2027', interest: '57.88', capital: '1215.51' },
-    { key: '5', year: '2028', interest: '60.78', capital: '1276.28' },
-  ];
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-  const columns = [
-    { name: 'year', label: 'Year' },
-    { name: 'interest', label: 'Interest' },
-    { name: 'capital', label: 'Capital' },
-  ];
+    // parse the form values
+    const fYears = parseInt(years, 10);
+    const fInterest = parseFloat(interest);
+    const fInitCapital = parseFloat(initCapital);
+
+    // validate fields to not be empty
+    if (years === '' || interest === '' || initCapital === '') {
+      alert('Please fill all fields');
+      return;
+    }
+
+    // validate fields to be numbers
+    if (isNaN(fYears) || isNaN(fInterest) || isNaN(fInitCapital)) {
+      alert('Please fill all fields with valid numbers');
+      return;
+    }
+
+    // run the simulation
+    const result = calculateDPF(fYears, fInterest, fInitCapital);
+    setRows(result);
+  };
+
+  const renderTable = () => {
+    if (rows.length === 0) {
+      return <p>Sin datos para mostrar</p>;
+    }
+
+    return (
+      <div className="overflow-x-auto">
+        <PrefabTable rows={rows} columns={columns} />
+      </div>
+    );
+  };
 
   return (
     <div className="prose prose-sm prose-invert max-w-none">
@@ -51,7 +84,7 @@ export default function Page() {
       <div className="grid md:grid-cols-3">
         <div className="col-span-2 flex gap-2">
           <Boundary labels={['Simulation Parameters']} size="small">
-            <Form action="empty">
+            <Form action="empty" onSubmit={handleSubmit}>
               <input
                 className="m-2 text-black"
                 name="years"
@@ -81,8 +114,7 @@ export default function Page() {
           </Boundary>
         </div>
       </div>
-
-      <PrefabTable rows={rows} columns={columns} />
+      {renderTable()}
     </div>
   );
 }
