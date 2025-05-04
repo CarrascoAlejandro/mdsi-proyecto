@@ -2,7 +2,7 @@ import { PrefabRow } from '#/ui/tabletable';
 
 export interface CustomerArrivalRow extends PrefabRow {
   key: string;
-  day: number;
+  clients: number;
   itemsSold: number;
   income: number;
   totalCosts: number;
@@ -56,8 +56,26 @@ export function simulateCustomerArrivals(
 
   // Validate probabilities
   if (prob0 + prob1 + prob2 + prob3 !== 1) {
-    throw new Error('Probabilities do not sum to 1.');
+    throw new Error(
+      `Probabilities ${prob0}, ${prob1}, ${prob2}, and ${prob3} must sum to 1.`,
+    );
   }
+
+  console.log(`Input parameters:
+    daysToSimulate: ${daysToSimulate}
+    hoursOpenPerDay: ${hoursOpenPerDay}
+    fixedCosts: ${fixedCosts}
+    itemCost: ${itemCost}
+    itemPrice: ${itemPrice}
+    clientsMin: ${clientsMin}
+    clientsMax: ${clientsMax}
+    prob0: ${prob0}
+    prob1: ${prob1}
+    prob2: ${prob2}
+    prob3: ${prob3}
+    randSeed1: ${randSeed1}
+    randSeed2: ${randSeed2}
+  `);
 
   // Simulation process
   const iterationsDay: CustomerArrivalRow[] = [];
@@ -68,9 +86,11 @@ export function simulateCustomerArrivals(
     let dailyItemsSold = 0;
     let dailyIncome = 0;
     let dailyCosts = fixedCosts;
+    let dailyClients = 0;
 
     for (let hour = 1; hour <= hoursOpenPerDay; hour++) {
       const clients = nextHourClients();
+      dailyClients += clients;
       for (let c = 0; c < clients; c++) {
         const itemsSold = itemsSoldPerClient();
         dailyItemsSold += itemsSold;
@@ -84,8 +104,8 @@ export function simulateCustomerArrivals(
     totalItemsSold += dailyItemsSold;
 
     iterationsDay.push({
-      key: `day_${day}`,
-      day: day,
+      key: day.toString(),
+      clients: dailyClients,
       itemsSold: dailyItemsSold,
       income: dailyIncome,
       totalCosts: dailyCosts,
@@ -105,7 +125,7 @@ export function simulateCustomerArrivals(
 }
 
 // Example usage
-const result = simulateCustomerArrivals(
+/*const result = simulateCustomerArrivals(
   30, // daysToSimulate
   10, // hoursOpenPerDay
   300, // fixedCosts
@@ -122,3 +142,4 @@ const result = simulateCustomerArrivals(
 );
 
 console.log(result);
+*/

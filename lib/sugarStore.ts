@@ -3,7 +3,6 @@ import { PrefabRow } from '#/ui/tabletable';
 // Define the interface for the result rows
 export interface SugarStoreRow extends PrefabRow {
   key: string;
-  day: number;
   sugarStock: number;
   todayDemand: number;
   dailySales: number;
@@ -31,7 +30,6 @@ export interface SugarStoreSimulationSummary {
 export function simulateSugarStore(
   maximumDays: number,
   maximumStock: number,
-  initialStock: number,
   orderPlacementCost: number,
   orderUnitCost: number,
   unitSalePrice: number,
@@ -56,7 +54,7 @@ export function simulateSugarStore(
   const randy2 = seededRandom(randSeed2);
 
   // Initialize variables
-  let sugarStock = initialStock;
+  let sugarStock = maximumStock;
   let timeToDelivery = 0;
   let orderedAmount = 0;
 
@@ -116,8 +114,7 @@ export function simulateSugarStore(
 
     // Save today's results
     results.push({
-      key: `day_${day}`,
-      day,
+      key: day.toString(),
       sugarStock,
       todayDemand,
       dailySales,

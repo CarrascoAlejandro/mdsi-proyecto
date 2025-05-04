@@ -59,15 +59,15 @@ export default function Page() {
     // parse the form values
     const fSeed1 = parseInt(seed1, 10);
     const fSeed2 = parseInt(seed2, 10);
-    const fA1 = parseInt(a1, 10);
-    const fA2 = parseInt(a2, 10);
-    const fC11 = parseInt(c11, 10);
-    const fC12 = parseInt(c12, 10);
-    const fC1b = parseInt(c1b, 10);
-    const fC21 = parseInt(c21, 10);
-    const fC22 = parseInt(c22, 10);
-    const fC2b = parseInt(c2b, 10);
     const fN = parseInt(N, 10);
+    const fA1 = parseFloat(a1);
+    const fA2 = parseFloat(a2);
+    const fC11 = parseFloat(c11);
+    const fC12 = parseFloat(c12);
+    const fC1b = parseFloat(c1b);
+    const fC21 = parseFloat(c21);
+    const fC22 = parseFloat(c22);
+    const fC2b = parseFloat(c2b);
 
     // validate fields to not be empty
     if (isNaN(fSeed1)) errors.push('Complete el campo de la semilla 1');
@@ -97,6 +97,8 @@ export default function Page() {
     } else {
       setInputErrors([]);
     }
+
+    console.log(`Debugging a params: ${fA1}; ${fA2}`);
 
     const simulationResult: {
       results: IntegerProgrammingRow[];
@@ -246,33 +248,10 @@ export default function Page() {
           <Form
             action="empty"
             onSubmit={handleSubmit}
-            className="grid px-3 md:grid-cols-5"
+            className="grid px-3 md:grid-cols-12"
           >
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              Semilla X1:
-            </span>
-            <span className="col-span-3">
-              <input
-                className="m-2 text-black"
-                name="seed1"
-                placeholder="Semilla X1"
-                value={seed1}
-                onChange={(e) => checkIfIsValidNumber(e, setSeed1)}
-              />
-            </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              Semilla X2:
-            </span>
-            <span className="col-span-3">
-              <input
-                className="m-2 text-black"
-                name="seed2"
-                placeholder="Semilla X2"
-                value={seed2}
-                onChange={(e) => checkIfIsValidNumber(e, setSeed2)}
-              />
-            </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            {/* Iterations row */}
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Cantidad de iteraciones:
             </span>
             <span className="col-span-3">
@@ -284,6 +263,8 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidNumber(e, setN)}
               />
             </span>
+            <span className="col-span-6"></span>
+            {/* Seeds row */}
             <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
               Semilla X1:
             </span>
@@ -308,8 +289,11 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidNumber(e, setSeed2)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              A1:
+            <span className="col-span-2"></span>
+
+            {/* Target function row */}
+            <span className="col-span-1 pt-2 text-right text-sm font-medium md:pt-5">
+              Min Z =
             </span>
             <span className="col-span-3">
               <input
@@ -317,23 +301,29 @@ export default function Page() {
                 name="a1"
                 placeholder="A1"
                 value={a1}
-                onChange={(e) => checkIfIsValidNumber(e, setA1)}
+                onChange={(e) => checkIfIsValidDecimal(e, setA1)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              A2:
+            <span className="col-span-1 pt-2 text-right text-sm font-medium md:pt-5">
+              x1 +
             </span>
+
             <span className="col-span-3">
               <input
                 className="m-2 text-black"
                 name="a2"
                 placeholder="A2"
                 value={a2}
-                onChange={(e) => checkIfIsValidNumber(e, setA2)}
+                onChange={(e) => checkIfIsValidDecimal(e, setA2)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              C11:
+            <span className="col-span-1 pt-2 text-right text-sm font-medium md:pt-5">
+              x2
+            </span>
+            <span className="col-span-3"></span>
+            {/* First Condition row */}
+            <span className="col-span-1 pt-2 text-right text-sm font-medium md:pt-5">
+              C1:
             </span>
             <span className="col-span-3">
               <input
@@ -341,11 +331,11 @@ export default function Page() {
                 name="c11"
                 placeholder="C11"
                 value={c11}
-                onChange={(e) => checkIfIsValidNumber(e, setC11)}
+                onChange={(e) => checkIfIsValidDecimal(e, setC11)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              C12:
+            <span className="col-span-1 pt-2 text-right text-sm font-medium md:pt-5">
+              x1 +
             </span>
             <span className="col-span-3">
               <input
@@ -353,11 +343,11 @@ export default function Page() {
                 name="c12"
                 placeholder="C12"
                 value={c12}
-                onChange={(e) => checkIfIsValidNumber(e, setC12)}
+                onChange={(e) => checkIfIsValidDecimal(e, setC12)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              C1b:
+            <span className="col-span-1 pt-2 text-right text-sm font-medium md:pt-5">
+              x2 {'≥'}
             </span>
             <span className="col-span-3">
               <input
@@ -365,11 +355,12 @@ export default function Page() {
                 name="c1b"
                 placeholder="C1b"
                 value={c1b}
-                onChange={(e) => checkIfIsValidNumber(e, setC1b)}
+                onChange={(e) => checkIfIsValidDecimal(e, setC1b)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              C21:
+            {/* Second Condition row */}
+            <span className="col-span-1 pt-2 text-right text-sm font-medium md:pt-5">
+              C2:
             </span>
             <span className="col-span-3">
               <input
@@ -377,11 +368,11 @@ export default function Page() {
                 name="c21"
                 placeholder="C21"
                 value={c21}
-                onChange={(e) => checkIfIsValidNumber(e, setC21)}
+                onChange={(e) => checkIfIsValidDecimal(e, setC21)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              C22:
+            <span className="col-span-1 pt-2 text-right text-sm font-medium md:pt-5">
+              x1 +
             </span>
             <span className="col-span-3">
               <input
@@ -389,11 +380,11 @@ export default function Page() {
                 name="c22"
                 placeholder="C22"
                 value={c22}
-                onChange={(e) => checkIfIsValidNumber(e, setC22)}
+                onChange={(e) => checkIfIsValidDecimal(e, setC22)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              C2b:
+            <span className="col-span-1 pt-2 text-right text-sm font-medium md:pt-5">
+              x2 {'≥'}
             </span>
             <span className="col-span-3">
               <input
@@ -401,9 +392,10 @@ export default function Page() {
                 name="c2b"
                 placeholder="C2b"
                 value={c2b}
-                onChange={(e) => checkIfIsValidNumber(e, setC2b)}
+                onChange={(e) => checkIfIsValidDecimal(e, setC2b)}
               />
             </span>
+            {/* Buttons row */}
             <span className="col-span-5">
               <Button type="submit">Generar 🎲</Button>
               <Button type="button" onClick={handleReset}>

@@ -13,7 +13,6 @@ export interface EggsAndChickensDayRow extends PrefabRow {
 
 export interface EggsAndChickensRunRow extends PrefabRow {
   key: string;
-  run: number;
   runTotalEggs: number;
   runBrokenEggs: number;
   runDeadChickens: number;
@@ -54,6 +53,13 @@ export function simulateEggsAndChickens(
   const randy2 = seededRandom(randSeed2);
   const randy3 = seededRandom(randSeed3);
 
+  // validate probabilities add up to 1
+  if (probBrokenEgg + probChick + probGoodEgg != 1) {
+    throw new Error(
+      'Probabilities of broken egg, chick, and good egg must sum to 1',
+    );
+  }
+
   // Generate Poisson probabilities
   function poissonProbabilities(lambda: number): number[] {
     const probabilities: number[] = [];
@@ -93,6 +99,21 @@ export function simulateEggsAndChickens(
     }
     return 'egg';
   }
+
+  console.log(`Simulation inputs:
+    maxDays: ${maxDays}
+    maxSimulations: ${maxSimulations}
+    chickPrice: ${chickPrice}
+    eggPrice: ${eggPrice}
+    probBrokenEgg: ${probBrokenEgg}
+    probChick: ${probChick}
+    probGoodEgg: ${probGoodEgg}
+    probDeadChick: ${probDeadChick}
+    poissonLambda: ${poissonLambda}
+    randSeed1: ${randSeed1}
+    randSeed2: ${randSeed2}
+    randSeed3: ${randSeed3}
+  `);
 
   // Simulate a single day
   function runSimulationDay(): EggsAndChickensDayRow[] {
@@ -171,8 +192,7 @@ export function simulateEggsAndChickens(
     });
 
     runResults.push({
-      key: `run_${run}`,
-      run,
+      key: run.toString(),
       runTotalEggs,
       runBrokenEggs,
       runDeadChickens,
@@ -182,13 +202,30 @@ export function simulateEggsAndChickens(
     });
   }
 
+  const totalEggsProduced = runResults.reduce(
+    (sum, run) => sum + run.runTotalEggs,
+    0,
+  );
+  const totalEggsSold = runResults.reduce(
+    (sum, run) => sum + run.runTotalSoldEggs,
+    0,
+  );
+  const totalChicksSold = runResults.reduce(
+    (sum, run) => sum + run.runAliveChickens,
+    0,
+  );
+  const totalIncome = runResults.reduce(
+    (sum, run) => sum + run.runTotalMoney,
+    0,
+  );
+
   return {
-    globalResults: [],
-    dayGroupedResults, // FIXME: Return the correct results
-    averageEggsProduced: 0, // FIXME: Calculate the correct average
-    averageEggsSold: 0, // FIXME: Calculate the correct average
-    averageChicksSold: 0, // FIXME: Calculate the correct average
-    averageIncome: 0, // FIXME: Calculate the correct average
+    globalResults: runResults,
+    dayGroupedResults,
+    averageEggsProduced: totalEggsProduced / maxSimulations,
+    averageEggsSold: totalEggsSold / maxSimulations,
+    averageChicksSold: totalChicksSold / maxSimulations,
+    averageIncome: totalIncome / maxSimulations,
   };
 }
 /*

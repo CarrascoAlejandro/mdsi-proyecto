@@ -22,8 +22,7 @@ export default function Page() {
   const [rows, setRows] = useState<CustomerArrivalRow[]>([]);
 
   const columns = [
-    { name: 'key', label: 'i' },
-    { name: 'day', label: 'Día' },
+    { name: 'key', label: 'Día' },
     { name: 'clients', label: 'Clientes' },
     { name: 'itemsSold', label: 'Artículos vendidos' },
     { name: 'income', label: 'Ingresos' },
@@ -47,6 +46,8 @@ export default function Page() {
   const [prob1, setProb1] = useState('');
   const [prob2, setProb2] = useState('');
   const [prob3, setProb3] = useState('');
+  const [clientsMin, setClientsMin] = useState('');
+  const [clientsMax, setClientsMax] = useState('');
 
   // rand seeds
   const [seed1, setSeed1] = useState('');
@@ -69,6 +70,8 @@ export default function Page() {
     const fProb1 = parseFloat(prob1);
     const fProb2 = parseFloat(prob2);
     const fProb3 = parseFloat(prob3);
+    const fClientsMin = parseInt(clientsMin, 10);
+    const fClientsMax = parseInt(clientsMax, 10);
     const fHoursOpenPerDay = parseInt(hoursOpenPerDay, 10);
     const fFixedCosts = parseFloat(fixedCosts);
     const fItemPrice = parseFloat(itemPrice);
@@ -82,6 +85,14 @@ export default function Page() {
     if (isNaN(fProb1)) errors.push('Complete el campo de la probabilidad 1');
     if (isNaN(fProb2)) errors.push('Complete el campo de la probabilidad 2');
     if (isNaN(fProb3)) errors.push('Complete el campo de la probabilidad 3');
+    if (isNaN(fClientsMin))
+      errors.push('Complete el campo de la cantidad mínima de clientes');
+    if (isNaN(fClientsMax))
+      errors.push('Complete el campo de la cantidad máxima de clientes');
+    if (fClientsMin > fClientsMax)
+      errors.push(
+        'La cantidad mínima de clientes no puede ser mayor a la máxima',
+      );
     if (isNaN(fHoursOpenPerDay))
       errors.push('Complete el campo de la cantidad de horas abiertas');
     if (isNaN(fFixedCosts))
@@ -107,12 +118,12 @@ export default function Page() {
       fFixedCosts,
       fItemCost,
       fItemPrice,
-      0,
-      4,
-      fProb0 / 100,
-      fProb1 / 100,
-      fProb2 / 100,
-      fProb3 / 100,
+      fClientsMin,
+      fClientsMax,
+      fProb0,
+      fProb1,
+      fProb2,
+      fProb3,
       fSeed1,
       fSeed2,
     );
@@ -178,15 +189,16 @@ export default function Page() {
           <div className="prose-lg">
             <p>
               <div className="text-sm">
-                <strong>Ganancia total:</strong> {simulationSummary.totalProfit}
+                <strong>Ganancia total:</strong>{' '}
+                {simulationSummary.totalProfit.toFixed(2)} Bs.
               </div>
               <div className="text-sm">
                 <strong>Ganancia promedio por día:</strong>{' '}
-                {simulationSummary.averageProfitPerDay}
+                {simulationSummary.averageProfitPerDay.toFixed(2)} Bs.
               </div>
               <div className="text-sm">
                 <strong>Artículos vendidos promedio por día:</strong>{' '}
-                {simulationSummary.averageItemsSoldPerDay}
+                {simulationSummary.averageItemsSoldPerDay.toFixed(2)}
               </div>
             </p>
           </div>
@@ -244,117 +256,9 @@ export default function Page() {
           <Form
             action="empty"
             onSubmit={handleSubmit}
-            className="grid px-3 md:grid-cols-5"
+            className="grid px-3 md:grid-cols-12"
           >
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              Días a simular:
-            </span>
-            <span className="col-span-3">
-              <input
-                className="m-2 text-black"
-                name="daysToSimulate"
-                placeholder="Cantidad de días"
-                value={daysToSimulate}
-                onChange={(e) => checkIfIsValidNumber(e, setDaysToSimulate)}
-              />
-            </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              Horas abiertas por día:
-            </span>
-            <span className="col-span-3">
-              <input
-                className="m-2 text-black"
-                name="hoursOpenPerDay"
-                placeholder="Horas abiertas"
-                value={hoursOpenPerDay}
-                onChange={(e) => checkIfIsValidNumber(e, setHoursOpenPerDay)}
-              />
-            </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              Costos fijos:
-            </span>
-            <span className="col-span-3">
-              <input
-                className="m-2 text-black"
-                name="fixedCosts"
-                placeholder="Costos fijos"
-                value={fixedCosts}
-                onChange={(e) => checkIfIsValidDecimal(e, setFixedCosts)}
-              />
-            </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              Costo del artículo:
-            </span>
-            <span className="col-span-3">
-              <input
-                className="m-2 text-black"
-                name="itemCost"
-                placeholder="Costo del artículo"
-                value={itemCost}
-                onChange={(e) => checkIfIsValidDecimal(e, setItemCost)}
-              />
-            </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              Precio del artículo:
-            </span>
-            <span className="col-span-3">
-              <input
-                className="m-2 text-black"
-                name="itemPrice"
-                placeholder="Precio del artículo"
-                value={itemPrice}
-                onChange={(e) => checkIfIsValidDecimal(e, setItemPrice)}
-              />
-            </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              Probabilidad 0 artículos:
-            </span>
-            <span className="col-span-3">
-              <input
-                className="m-2 text-black"
-                name="prob0"
-                placeholder="Probabilidad 0"
-                value={prob0}
-                onChange={(e) => checkIfIsValidPercentage(e, setProb0)}
-              />
-            </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              Probabilidad 1 artículo:
-            </span>
-            <span className="col-span-3">
-              <input
-                className="m-2 text-black"
-                name="prob1"
-                placeholder="Probabilidad 1"
-                value={prob1}
-                onChange={(e) => checkIfIsValidPercentage(e, setProb1)}
-              />
-            </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              Probabilidad 2 artículos:
-            </span>
-            <span className="col-span-3">
-              <input
-                className="m-2 text-black"
-                name="prob2"
-                placeholder="Probabilidad 2"
-                value={prob2}
-                onChange={(e) => checkIfIsValidPercentage(e, setProb2)}
-              />
-            </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              Probabilidad 3 artículos:
-            </span>
-            <span className="col-span-3">
-              <input
-                className="m-2 text-black"
-                name="prob3"
-                placeholder="Probabilidad 3"
-                value={prob3}
-                onChange={(e) => checkIfIsValidPercentage(e, setProb3)}
-              />
-            </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Semilla 1:
             </span>
             <span className="col-span-3">
@@ -366,7 +270,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidNumber(e, setSeed1)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Semilla 2:
             </span>
             <span className="col-span-3">
@@ -378,6 +282,147 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidNumber(e, setSeed2)}
               />
             </span>
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
+              Días a simular:
+            </span>
+            <span className="col-span-3">
+              <input
+                className="m-2 text-black"
+                name="daysToSimulate"
+                placeholder="Cantidad de días"
+                value={daysToSimulate}
+                onChange={(e) => checkIfIsValidNumber(e, setDaysToSimulate)}
+              />
+            </span>
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
+              Horas abiertas por día:
+            </span>
+            <span className="col-span-3">
+              <input
+                className="m-2 text-black"
+                name="hoursOpenPerDay"
+                placeholder="Horas abiertas"
+                value={hoursOpenPerDay}
+                onChange={(e) => checkIfIsValidNumber(e, setHoursOpenPerDay)}
+              />
+            </span>
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
+              Costos fijos:
+            </span>
+            <span className="col-span-3">
+              <input
+                className="m-2 text-black"
+                name="fixedCosts"
+                placeholder="Costos fijos"
+                value={fixedCosts}
+                onChange={(e) => checkIfIsValidDecimal(e, setFixedCosts)}
+              />
+            </span>
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
+              Costo del artículo:
+            </span>
+            <span className="col-span-3">
+              <input
+                className="m-2 text-black"
+                name="itemCost"
+                placeholder="Costo del artículo"
+                value={itemCost}
+                onChange={(e) => checkIfIsValidDecimal(e, setItemCost)}
+              />
+            </span>
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
+              Precio del artículo:
+            </span>
+            <span className="col-span-3">
+              <input
+                className="m-2 text-black"
+                name="itemPrice"
+                placeholder="Precio del artículo"
+                value={itemPrice}
+                onChange={(e) => checkIfIsValidDecimal(e, setItemPrice)}
+              />
+            </span>
+            <span className="col-span-6"></span>
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
+              Mínimo Clientes cada hora:
+            </span>
+            <span className="col-span-3">
+              <input
+                className="m-2 text-black"
+                name="minClients"
+                placeholder="Mínimo clientes"
+                value={clientsMin}
+                onChange={(e) => checkIfIsValidNumber(e, setClientsMin)}
+              />
+            </span>
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
+              Máximo Clientes cada hora:
+            </span>
+            <span className="col-span-3">
+              <input
+                className="m-2 text-black"
+                name="maxClients"
+                placeholder="Máximo clientes"
+                value={clientsMax}
+                onChange={(e) => checkIfIsValidNumber(e, setClientsMax)}
+              />
+            </span>
+            <div className="col-span-12">
+              <Boundary labels={['Probabilidad de Compra']} color="orange">
+                <div className="text-vercel-white grid px-3 md:grid-cols-9">
+                  <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+                    0 artículos:
+                  </span>
+                  <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+                    1 artículo:
+                  </span>
+                  <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+                    2 artículos:
+                  </span>
+                  <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+                    3 artículos:
+                  </span>
+                  <span className="col-span-1 pt-2 text-right text-sm font-medium md:pt-5"></span>
+                  <span className="col-span-2">
+                    <input
+                      className="m-2 text-black"
+                      name="prob0"
+                      placeholder="Probabilidad 0"
+                      value={prob0}
+                      onChange={(e) => checkIfIsValidPercentage(e, setProb0)}
+                    />
+                  </span>
+                  <span className="col-span-2">
+                    <input
+                      className="m-2 text-black"
+                      name="prob1"
+                      placeholder="Probabilidad 1"
+                      value={prob1}
+                      onChange={(e) => checkIfIsValidPercentage(e, setProb1)}
+                    />
+                  </span>
+                  <span className="col-span-2">
+                    <input
+                      className="m-2 text-black"
+                      name="prob2"
+                      placeholder="Probabilidad 2"
+                      value={prob2}
+                      onChange={(e) => checkIfIsValidPercentage(e, setProb2)}
+                    />
+                  </span>
+                  <span className="col-span-2">
+                    <input
+                      className="m-2 text-black"
+                      name="prob3"
+                      placeholder="Probabilidad 3"
+                      value={prob3}
+                      onChange={(e) => checkIfIsValidPercentage(e, setProb3)}
+                    />
+                  </span>
+                  <span className="col-span-1 pt-2 text-right text-sm font-medium md:pt-5"></span>
+                </div>
+              </Boundary>
+            </div>
             <span className="col-span-5">
               <Button type="submit">Generar 🎲</Button>
               <Button type="button" onClick={handleReset}>

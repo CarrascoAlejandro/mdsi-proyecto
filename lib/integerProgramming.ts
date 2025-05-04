@@ -44,6 +44,28 @@ export function integerProgrammingSimulation(
   let x2 = 0;
   const iterations: IntegerProgrammingRow[] = [];
 
+  console.log('Input parameters: \n', {
+    N,
+    randSeed1,
+    randSeed2,
+    a1,
+    a2,
+    c11,
+    c12,
+    c1b,
+    c21,
+    c22,
+    c2b,
+  });
+  console.log('Constraints: \n', {
+    c1: `c1: ${c11}*x1 + ${c12}*x2 >= ${c1b}`,
+    c2: `c2: ${c21}*x1 + ${c22}*x2 >= ${c2b}`,
+  });
+  console.log('Objective function: \n', {
+    Z: `Z = ${a1}*x1 + ${a2}*x2`,
+  });
+  console.log('Starting simulation...');
+
   // Simulation process
   for (let i = 1; i <= N; i++) {
     const x1_rand = Math.round(randy1() * 100);
@@ -53,7 +75,10 @@ export function integerProgrammingSimulation(
       continue;
     }
 
-    const Z_aux = c11 * x1_rand + c12 * x2_rand + c21 * x1_rand + c22 * x2_rand;
+    const Z_aux = a1 * x1_rand + a2 * x2_rand;
+    console.log(
+      `Iteration ${i}: ${a1}*${x1_rand}, ${a2}*${x2_rand} = ${Z_aux}`,
+    );
     if (Z_aux < Z) {
       Z = Z_aux;
       x1 = x1_rand;

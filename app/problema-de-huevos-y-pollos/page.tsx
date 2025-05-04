@@ -21,8 +21,7 @@ export default function Page() {
   const [rows, setRows] = useState<EggsAndChickensRunRow[]>([]);
 
   const columns = [
-    { name: 'key', label: 'i' },
-    { name: 'run', label: 'Simulación' },
+    { name: 'key', label: 'Simulación' },
     { name: 'runTotalEggs', label: 'Huevos Totales' },
     { name: 'runBrokenEggs', label: 'Huevos Rotos' },
     { name: 'runDeadChickens', label: 'Pollos Muertos' },
@@ -132,6 +131,8 @@ export default function Page() {
       fSeed3,
     );
 
+    console.log(simulationResult);
+
     setRows(simulationResult.globalResults);
     setSimulationSummary({
       averageEggsProduced: simulationResult.averageEggsProduced,
@@ -195,17 +196,19 @@ export default function Page() {
             <p>
               <div className="text-sm">
                 Promedio de huevos producidos:{' '}
-                {simulationSummary.averageEggsProduced}
+                {simulationSummary.averageEggsProduced.toFixed(2)}
               </div>
               <div className="text-sm">
-                Promedio de huevos vendidos: {simulationSummary.averageEggsSold}
+                Promedio de huevos vendidos:{' '}
+                {simulationSummary.averageEggsSold.toFixed(2)}
               </div>
               <div className="text-sm">
                 Promedio de pollos vendidos:{' '}
-                {simulationSummary.averageChicksSold}
+                {simulationSummary.averageChicksSold.toFixed(2)}
               </div>
               <div className="text-sm">
-                Promedio de ingresos: {simulationSummary.averageIncome}
+                Promedio de ingresos:{' '}
+                {simulationSummary.averageIncome.toFixed(2)} bs
               </div>
             </p>
           </div>
@@ -261,9 +264,9 @@ export default function Page() {
           <Form
             action="empty"
             onSubmit={handleSubmit}
-            className="grid px-3 md:grid-cols-5"
+            className="grid px-3 md:grid-cols-12"
           >
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Días máximos:
             </span>
             <span className="col-span-3">
@@ -275,7 +278,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidNumber(e, setMaxDays)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Simulaciones máximas:
             </span>
             <span className="col-span-3">
@@ -287,7 +290,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidNumber(e, setMaxSimulations)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Precio del pollo:
             </span>
             <span className="col-span-3">
@@ -299,7 +302,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidDecimal(e, setChickPrice)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Precio del huevo:
             </span>
             <span className="col-span-3">
@@ -311,7 +314,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidDecimal(e, setEggPrice)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Probabilidad de huevos rotos:
             </span>
             <span className="col-span-3">
@@ -323,7 +326,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidDecimal(e, setProbBrokenEgg)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Probabilidad de pollos:
             </span>
             <span className="col-span-3">
@@ -335,7 +338,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidDecimal(e, setProbChick)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Probabilidad de huevos buenos:
             </span>
             <span className="col-span-3">
@@ -347,7 +350,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidDecimal(e, setProbGoodEgg)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Probabilidad de pollos muertos:
             </span>
             <span className="col-span-3">
@@ -359,7 +362,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidDecimal(e, setProbDeadChick)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Lambda de Poisson:
             </span>
             <span className="col-span-3">
@@ -371,7 +374,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidDecimal(e, setPoissonLambda)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Semilla Aleatoria 1:
             </span>
             <span className="col-span-3">
@@ -383,7 +386,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidNumber(e, setSeed1)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Semilla Aleatoria 2:
             </span>
             <span className="col-span-3">
@@ -395,7 +398,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidNumber(e, setSeed2)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Semilla Aleatoria 3:
             </span>
             <span className="col-span-3">

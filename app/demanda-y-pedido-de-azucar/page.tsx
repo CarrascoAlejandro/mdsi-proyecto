@@ -21,8 +21,7 @@ export default function Page() {
   const [rows, setRows] = useState<SugarStoreRow[]>([]);
 
   const columns = [
-    { name: 'key', label: 'i' },
-    { name: 'day', label: 'Día' },
+    { name: 'key', label: 'Día' },
     { name: 'sugarStock', label: 'Stock de Azúcar' },
     { name: 'todayDemand', label: 'Demanda Diaria' },
     { name: 'dailySales', label: 'Ventas Diarias' },
@@ -42,7 +41,6 @@ export default function Page() {
   // params
   const [maxDays, setMaxDays] = useState('');
   const [maxStock, setMaxStock] = useState('');
-  const [initialStock, setInitialStock] = useState('');
   const [orderPlacementCost, setOrderPlacementCost] = useState('');
   const [orderUnitCost, setOrderUnitCost] = useState('');
   const [unitSalePrice, setUnitSalePrice] = useState('');
@@ -70,7 +68,6 @@ export default function Page() {
     const fSeed2 = parseInt(seed2, 10);
     const fMaxDays = parseInt(maxDays, 10);
     const fMaxStock = parseInt(maxStock, 10);
-    const fInitialStock = parseInt(initialStock, 10);
     const fOrderPlacementCost = parseFloat(orderPlacementCost);
     const fOrderUnitCost = parseFloat(orderUnitCost);
     const fUnitSalePrice = parseFloat(unitSalePrice);
@@ -85,8 +82,6 @@ export default function Page() {
     if (isNaN(fMaxDays))
       errors.push('Complete el campo de la cantidad máxima de días');
     if (isNaN(fMaxStock)) errors.push('Complete el campo del stock máximo');
-    if (isNaN(fInitialStock))
-      errors.push('Complete el campo del stock inicial');
     if (isNaN(fOrderPlacementCost))
       errors.push('Complete el campo del costo de colocación de pedido');
     if (isNaN(fOrderUnitCost))
@@ -116,7 +111,6 @@ export default function Page() {
     } = simulateSugarStore(
       fMaxDays,
       fMaxStock,
-      fInitialStock,
       fOrderPlacementCost,
       fOrderUnitCost,
       fUnitSalePrice,
@@ -185,7 +179,8 @@ export default function Page() {
           <div className="prose-lg">
             <p>
               <div className="text-sm">
-                Total de Ganancias: {simulationSummary.totalProfit} Bs.
+                Total de Ganancias: {simulationSummary.totalProfit.toFixed(2)}{' '}
+                Bs.
               </div>
               <div className="text-sm">
                 Total de Kg Vendidos: {simulationSummary.totalKgSold} Kg
@@ -195,23 +190,24 @@ export default function Page() {
                 {simulationSummary.totalSalesLost} Kg
               </div>
               <div className="text-sm">
-                Ingreso Promedio Diario: {simulationSummary.averageIncomeDaily}{' '}
-                Bs.
+                Ingreso Promedio Diario:{' '}
+                {simulationSummary.averageIncomeDaily.toFixed(2)} Bs.
               </div>
               <div className="text-sm">
-                Costo Promedio Diario: {simulationSummary.averageCostDaily} Bs.
+                Costo Promedio Diario:{' '}
+                {simulationSummary.averageCostDaily.toFixed(2)} Bs.
               </div>
               <div className="text-sm">
                 Kg Vendidos Promedio Diario:{' '}
-                {simulationSummary.averageKgSoldDaily} Kg
+                {simulationSummary.averageKgSoldDaily.toFixed(2)} Kg
               </div>
               <div className="text-sm">
-                Demanda Promedio Diaria: {simulationSummary.averageDailyDemand}{' '}
-                Kg
+                Demanda Promedio Diaria:{' '}
+                {simulationSummary.averageDailyDemand.toFixed(2)} Kg
               </div>
               <div className="text-sm">
                 Tiempo Promedio de Entrega:{' '}
-                {simulationSummary.averageTimeToDelivery} días
+                {simulationSummary.averageTimeToDelivery.toFixed(2)} días
               </div>
             </p>
           </div>
@@ -227,7 +223,6 @@ export default function Page() {
     setLoading(false);
     setMaxDays('');
     setMaxStock('');
-    setInitialStock('');
     setOrderPlacementCost('');
     setOrderUnitCost('');
     setUnitSalePrice('');
@@ -275,33 +270,33 @@ export default function Page() {
           <Form
             action="empty"
             onSubmit={handleSubmit}
-            className="grid px-3 md:grid-cols-5"
+            className="grid px-3 md:grid-cols-12"
           >
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              Semilla Dado 1:
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
+              Semilla Demanda:
             </span>
             <span className="col-span-3">
               <input
                 className="m-2 text-black"
                 name="seed1"
-                placeholder="Semilla Dado 1"
+                placeholder="Semilla 1"
                 value={seed1}
                 onChange={(e) => checkIfIsValidNumber(e, setSeed1)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              Semilla Dado 2:
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
+              Semilla Tiempo de llegada:
             </span>
             <span className="col-span-3">
               <input
                 className="m-2 text-black"
                 name="seed2"
-                placeholder="Semilla Dado 2"
+                placeholder="Semilla 2"
                 value={seed2}
                 onChange={(e) => checkIfIsValidNumber(e, setSeed2)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Días máximos:
             </span>
             <span className="col-span-3">
@@ -313,7 +308,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidNumber(e, setMaxDays)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Stock máximo:
             </span>
             <span className="col-span-3">
@@ -325,19 +320,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidNumber(e, setMaxStock)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
-              Stock inicial:
-            </span>
-            <span className="col-span-3">
-              <input
-                className="m-2 text-black"
-                name="initialStock"
-                placeholder="Stock inicial"
-                value={initialStock}
-                onChange={(e) => checkIfIsValidNumber(e, setInitialStock)}
-              />
-            </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Costo de colocación de pedido:
             </span>
             <span className="col-span-3">
@@ -351,7 +334,7 @@ export default function Page() {
                 }
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Costo unitario de pedido:
             </span>
             <span className="col-span-3">
@@ -363,7 +346,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidDecimal(e, setOrderUnitCost)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Precio de venta por unidad:
             </span>
             <span className="col-span-3">
@@ -375,7 +358,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidDecimal(e, setUnitSalePrice)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Costo de almacenamiento:
             </span>
             <span className="col-span-3">
@@ -387,7 +370,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidDecimal(e, setHoldingCost)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Tiempo mínimo de entrega:
             </span>
             <span className="col-span-3">
@@ -399,7 +382,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidNumber(e, setMinTimeToDelivery)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Tiempo máximo de entrega:
             </span>
             <span className="col-span-3">
@@ -411,7 +394,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidNumber(e, setMaxTimeToDelivery)}
               />
             </span>
-            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
               Demanda promedio:
             </span>
             <span className="col-span-3">
@@ -423,6 +406,7 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidDecimal(e, setAverageDemand)}
               />
             </span>
+            <span className="col-span-6"></span>
             <span className="col-span-5">
               <Button type="submit">Generar 🎲</Button>
               <Button type="button" onClick={handleReset}>
