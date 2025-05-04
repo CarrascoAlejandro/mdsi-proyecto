@@ -4,7 +4,7 @@ import Form from 'next/form';
 import Button from '#/ui/button';
 import { PrefabTable } from '#/ui/tabletable';
 import { useState } from 'react';
-import { simulateGame, diceGameRow } from '#/lib/diceGame';
+import { simulateGame, simulateHouse, simulationRunRow } from '#/lib/diceGame';
 import {
   checkIfIsValidNumber,
   checkIfIsValidDecimal,
@@ -14,19 +14,17 @@ import InputErrorList from '#/ui/input-error';
 import { Boundary } from '#/ui/boundary';
 
 export default function Page() {
-  const [rows, setRows] = useState<diceGameRow[]>([]);
+  const [rows, setRows] = useState<simulationRunRow[]>([]);
 
   const columns = [
-    { name: 'key', label: 'Juego' },
-    { name: 'dice1', label: 'Dado 1' },
-    { name: 'dice2', label: 'Dado 2' },
-    { name: 'sumDice', label: 'Suma Dados' },
-    { name: 'win', label: 'Casa Gana' },
-    { name: 'profits', label: 'Ganancias' },
+    { name: 'key', label: 'N.Sim.' },
+    { name: 'houseWins', label: 'Juegos Ganados' },
+    { name: 'houseWinChance', label: 'Probabilidad de Ganar' },
+    { name: 'houseProfits', label: 'Ganancias de la Casa' },
   ];
 
   const [simulationSummary, setSimulationSummary] = useState<{
-    totalEarnings: number;
+    averageEarnings: number;
     gamesWon: number;
     winPercentage: number;
   } | null>(null);
@@ -75,16 +73,23 @@ export default function Page() {
     }
 
     const simulationResult: {
-      simulationDetails: diceGameRow[];
-      totalEarnings: number;
-      gamesWon: number;
+      simulationDetails: simulationRunRow[];
+      averageEarnings: number;
+      houseWins: number;
       winPercentage: number;
-    } = simulateGame(fMaxGames, fCost, fReward, fSeed1, fSeed2);
+    } = simulateHouse(
+      maxSimulations,
+      fMaxGames,
+      fCost,
+      fReward,
+      fSeed1,
+      fSeed2,
+    );
 
     setRows(simulationResult.simulationDetails);
     setSimulationSummary({
-      totalEarnings: simulationResult.totalEarnings,
-      gamesWon: simulationResult.gamesWon,
+      averageEarnings: simulationResult.averageEarnings,
+      gamesWon: simulationResult.houseWins,
       winPercentage: simulationResult.winPercentage,
     });
 
@@ -142,13 +147,15 @@ export default function Page() {
           <div className="prose-lg">
             <p>
               <div className="text-sm">
-                Total de Ganancias: {simulationSummary.totalEarnings}.00 Bs
+                Promedio de Ganancias por simulación:{' '}
+                {simulationSummary.averageEarnings.toFixed(2)} Bs
               </div>
               <div className="text-sm">
                 Juegos Ganados: {simulationSummary.gamesWon}
               </div>
               <div className="text-sm">
-                Porcentaje de Ganancia: {simulationSummary.winPercentage}%
+                Porcentaje de Ganancia:{' '}
+                {simulationSummary.winPercentage.toFixed(2)}%
               </div>
             </p>
           </div>

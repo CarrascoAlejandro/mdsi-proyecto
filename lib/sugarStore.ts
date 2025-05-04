@@ -27,6 +27,18 @@ export interface SugarStoreSimulationSummary {
   averageTimeToDelivery: number;
 }
 
+export interface SugarStoreSimulationRow extends PrefabRow {
+  key: string;
+  totalProfit: number;
+  totalKgSold: number;
+  totalSalesLost: number;
+  averageIncomeDaily: number;
+  averageCostDaily: number;
+  averageKgSoldDaily: number;
+  averageDailyDemand: number;
+  averageTimeToDelivery: number;
+}
+
 export function simulateSugarStore(
   maximumDays: number,
   maximumStock: number,
@@ -150,20 +162,82 @@ export function simulateSugarStore(
   };
 }
 
-/*// Example usage
-const simulationResults = simulateSugarStore(
-  27, // maximumDays
-  700, // maximumStock
-  700, // initialStock
-  100, // orderPlacementCost
-  3.5, // orderUnitCost
-  5.0, // unitSalePrice
-  0.1, // holdingCost
-  1, // minTimeToDelivery
-  3, // maxTimeToDelivery
-  100, // averageDemand
-  100, // randSeed1
-  200, // randSeed2
-);
+export function multipleSimulations(
+  maxSimulations: number,
+  maximumDays: number,
+  maximumStock: number,
+  orderPlacementCost: number,
+  orderUnitCost: number,
+  unitSalePrice: number,
+  holdingCost: number,
+  minTimeToDelivery: number,
+  maxTimeToDelivery: number,
+  averageDemand: number,
+  randSeed1: number,
+  randSeed2: number,
+): {
+  simulationsResults: SugarStoreSimulationRow[];
+  simulationSummary: SugarStoreSimulationSummary;
+} {
+  const simulationResults: SugarStoreSimulationRow[] = [];
+  const simulationSummary: SugarStoreSimulationSummary = {
+    totalProfit: 0,
+    totalKgSold: 0,
+    totalSalesLost: 0,
+    averageIncomeDaily: 0,
+    averageCostDaily: 0,
+    averageKgSoldDaily: 0,
+    averageDailyDemand: 0,
+    averageTimeToDelivery: 0,
+  };
 
-console.log(simulationResults);*/
+  for (let i = 1; i <= maxSimulations; i++) {
+    const { simulationResults: results, simulationSummary: summary } =
+      simulateSugarStore(
+        maximumDays,
+        maximumStock,
+        orderPlacementCost,
+        orderUnitCost,
+        unitSalePrice,
+        holdingCost,
+        minTimeToDelivery,
+        maxTimeToDelivery,
+        averageDemand,
+        randSeed1 + i * 10000, // Different seed for each simulation
+        randSeed2 + i * 10000, // Different seed for each simulation
+      );
+
+    simulationResults.push({
+      key: i.toString(),
+      totalProfit: summary.totalProfit,
+      totalKgSold: summary.totalKgSold,
+      totalSalesLost: summary.totalSalesLost,
+      averageIncomeDaily: summary.averageIncomeDaily,
+      averageCostDaily: summary.averageCostDaily,
+      averageKgSoldDaily: summary.averageKgSoldDaily,
+      averageDailyDemand: summary.averageDailyDemand,
+      averageTimeToDelivery: summary.averageTimeToDelivery,
+    });
+    simulationSummary.totalProfit += summary.totalProfit;
+    simulationSummary.totalKgSold += summary.totalKgSold;
+    simulationSummary.totalSalesLost += summary.totalSalesLost;
+    simulationSummary.averageIncomeDaily += summary.averageIncomeDaily;
+    simulationSummary.averageCostDaily += summary.averageCostDaily;
+    simulationSummary.averageKgSoldDaily += summary.averageKgSoldDaily;
+    simulationSummary.averageDailyDemand += summary.averageDailyDemand;
+    simulationSummary.averageTimeToDelivery += summary.averageTimeToDelivery;
+  }
+  // Calculate averages
+  simulationSummary.totalProfit /= maxSimulations;
+  simulationSummary.totalKgSold /= maxSimulations;
+  simulationSummary.totalSalesLost /= maxSimulations;
+  simulationSummary.averageIncomeDaily /= maxSimulations;
+  simulationSummary.averageCostDaily /= maxSimulations;
+  simulationSummary.averageKgSoldDaily /= maxSimulations;
+  simulationSummary.averageDailyDemand /= maxSimulations;
+  simulationSummary.averageTimeToDelivery /= maxSimulations;
+  return {
+    simulationsResults: simulationResults,
+    simulationSummary: simulationSummary,
+  };
+}

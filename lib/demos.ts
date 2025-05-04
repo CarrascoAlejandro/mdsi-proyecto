@@ -46,7 +46,7 @@ export const demos: { name: string; items: Item[] }[] = [
         description: 'Simula el crecimiento de una población',
       },
       {
-        name: 'Juego de Craps',
+        name: 'Juego de Suma 7',
         slug: 'juego-de-craps',
         description: 'Simula un juego de azar',
       },

@@ -9,6 +9,13 @@ export interface diceGameRow extends PrefabRow {
   profits: number;
 }
 
+export interface simulationRunRow extends PrefabRow {
+  key: string; // number of the run
+  houseWins: number;
+  houseWinChance: string;
+  houseProfits: number;
+}
+
 export function simulateGame(
   throws: number,
   cost: number,
@@ -68,6 +75,62 @@ export function simulateGame(
   };
 }
 
-// Example usage:
-//const result = simulateGame(10, 2, 5, 423, 321);
-//console.log(result);
+export function simulateHouse(
+  totalSims: number,
+  throwsPerGame: number,
+  cost: number,
+  reward: number,
+  randSeed1: number,
+  randSeed2: number,
+): {
+  simulationDetails: simulationRunRow[];
+  averageEarnings: number;
+  houseWins: number;
+  winPercentage: number;
+} {
+  // Helper function to create a seeded random number generator
+  function seededRandom(seed: number): () => number {
+    let x = Math.sin(seed++) * 10000;
+    return () => (x = Math.sin(x) * 10000) - Math.floor(x);
+  }
+
+  // Create two random number generators
+  const randy1 = seededRandom(randSeed1);
+  const randy2 = seededRandom(randSeed2);
+
+  // Simulation process
+  const games: simulationRunRow[] = [];
+  let totalEarnings = 0;
+  let houseWins = 0;
+
+  for (let i = 0; i < totalSims; i++) {
+    // simulate a game
+    const gameResult = simulateGame(
+      throwsPerGame,
+      cost,
+      reward,
+      randy1(),
+      randy2(),
+    );
+
+    // update the house wins
+    houseWins += gameResult.gamesWon;
+    totalEarnings += gameResult.totalEarnings;
+    // record game result
+    games.push({
+      key: (i + 1).toString(),
+      houseWins: gameResult.gamesWon,
+      houseWinChance: `${gameResult.winPercentage}%`,
+      houseProfits: gameResult.totalEarnings,
+    });
+  }
+
+  // Calculate summary statistics
+  const houseWinChance = (houseWins / (totalSims * throwsPerGame)) * 100;
+  return {
+    simulationDetails: games,
+    averageEarnings: totalEarnings / totalSims,
+    houseWins: houseWins,
+    winPercentage: houseWinChance,
+  };
+}

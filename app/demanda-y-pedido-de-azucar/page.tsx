@@ -5,8 +5,10 @@ import Button from '#/ui/button';
 import { PrefabTable } from '#/ui/tabletable';
 import { useState } from 'react';
 import {
+  multipleSimulations,
   simulateSugarStore,
   SugarStoreRow,
+  SugarStoreSimulationRow,
   SugarStoreSimulationSummary,
 } from '#/lib/sugarStore';
 import {
@@ -18,27 +20,25 @@ import InputErrorList from '#/ui/input-error';
 import { Boundary } from '#/ui/boundary';
 
 export default function Page() {
-  const [rows, setRows] = useState<SugarStoreRow[]>([]);
+  const [rows, setRows] = useState<SugarStoreSimulationRow[]>([]);
 
   const columns = [
-    { name: 'key', label: 'Día' },
-    { name: 'sugarStock', label: 'Stock de Azúcar' },
-    { name: 'todayDemand', label: 'Demanda Diaria' },
-    { name: 'dailySales', label: 'Ventas Diarias' },
-    { name: 'lostSales', label: 'Ventas Perdidas' },
-    { name: 'holdingCostToday', label: 'Costo de Almacenamiento' },
-    { name: 'orderCostToday', label: 'Costo de Pedido' },
-    { name: 'orderedAmount', label: 'Cantidad Pedida' },
-    { name: 'timeToDelivery', label: 'Tiempo de Entrega' },
-    { name: 'todayIncome', label: 'Ingreso Diario' },
-    { name: 'todayCost', label: 'Costo Diario' },
-    { name: 'todayProfit', label: 'Ganancia Diaria' },
+    { name: 'key', label: 'N.Sim.' },
+    { name: 'totalProfit', label: 'Ganancia Total' },
+    { name: 'totalKgSold', label: 'Kg Vendidos' },
+    { name: 'totalSalesLost', label: 'Demanda Insatisfecha' },
+    { name: 'averageIncomeDaily', label: 'Ingreso Diario Medio' },
+    { name: 'averageCostDaily', label: 'Costo Diario Medio' },
+    { name: 'averageKgSoldDaily', label: 'Kg Vendidos Diario Medio' },
+    { name: 'averageDailyDemand', label: 'Demanda Diaria Media' },
+    { name: 'averageTimeToDelivery', label: 'Tiempo Medio de Entrega' },
   ];
 
   const [simulationSummary, setSimulationSummary] =
     useState<SugarStoreSimulationSummary | null>(null);
 
   // params
+  const [nSimulations, setNSimulations] = useState('');
   const [maxDays, setMaxDays] = useState('');
   const [maxStock, setMaxStock] = useState('');
   const [orderPlacementCost, setOrderPlacementCost] = useState('');
@@ -66,6 +66,7 @@ export default function Page() {
     // parse the form values
     const fSeed1 = parseInt(seed1, 10);
     const fSeed2 = parseInt(seed2, 10);
+    const fNSimulations = parseInt(nSimulations, 10);
     const fMaxDays = parseInt(maxDays, 10);
     const fMaxStock = parseInt(maxStock, 10);
     const fOrderPlacementCost = parseFloat(orderPlacementCost);
@@ -79,6 +80,8 @@ export default function Page() {
     // validate fields to not be empty
     if (isNaN(fSeed1)) errors.push('Complete el campo de la semilla 1');
     if (isNaN(fSeed2)) errors.push('Complete el campo de la semilla 2');
+    if (isNaN(fNSimulations))
+      errors.push('Complete el campo de la cantidad de simulaciones');
     if (isNaN(fMaxDays))
       errors.push('Complete el campo de la cantidad máxima de días');
     if (isNaN(fMaxStock)) errors.push('Complete el campo del stock máximo');
@@ -106,9 +109,10 @@ export default function Page() {
     }
 
     const simulationResult: {
-      simulationResults: SugarStoreRow[];
+      simulationsResults: SugarStoreSimulationRow[];
       simulationSummary: SugarStoreSimulationSummary;
-    } = simulateSugarStore(
+    } = multipleSimulations(
+      fNSimulations,
       fMaxDays,
       fMaxStock,
       fOrderPlacementCost,
@@ -122,7 +126,7 @@ export default function Page() {
       fSeed2,
     );
 
-    setRows(simulationResult.simulationResults);
+    setRows(simulationResult.simulationsResults);
     setSimulationSummary(simulationResult.simulationSummary);
 
     setLoading(false);
@@ -175,18 +179,18 @@ export default function Page() {
     if (simulationSummary) {
       return (
         <div className="flex flex-col gap-2">
-          <h2 className="text-lg font-bold">Resumen de la Simulación</h2>
+          <h2 className="text-lg font-bold">Resumen de las Simulaciones</h2>
           <div className="prose-lg">
             <p>
               <div className="text-sm">
-                Total de Ganancias: {simulationSummary.totalProfit.toFixed(2)}{' '}
-                Bs.
+                Promedio de Ganancias:{' '}
+                {simulationSummary.totalProfit.toFixed(2)} Bs.
               </div>
               <div className="text-sm">
-                Total de Kg Vendidos: {simulationSummary.totalKgSold} Kg
+                Promedio de Kg Vendidos: {simulationSummary.totalKgSold} Kg
               </div>
               <div className="text-sm">
-                Total de Demanda Insatisfecha:{' '}
+                Promedio de Demanda Insatisfecha:{' '}
                 {simulationSummary.totalSalesLost} Kg
               </div>
               <div className="text-sm">
@@ -294,6 +298,18 @@ export default function Page() {
                 placeholder="Semilla 2"
                 value={seed2}
                 onChange={(e) => checkIfIsValidNumber(e, setSeed2)}
+              />
+            </span>
+            <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
+              Cantidad de simulaciones:
+            </span>
+            <span className="col-span-3">
+              <input
+                className="m-2 text-black"
+                name="nSimulations"
+                placeholder="Cantidad de simulaciones"
+                value={nSimulations}
+                onChange={(e) => checkIfIsValidNumber(e, setNSimulations)}
               />
             </span>
             <span className="col-span-3 pt-2 text-right text-sm font-medium md:pt-5">
@@ -406,7 +422,6 @@ export default function Page() {
                 onChange={(e) => checkIfIsValidDecimal(e, setAverageDemand)}
               />
             </span>
-            <span className="col-span-6"></span>
             <span className="col-span-5">
               <Button type="submit">Generar 🎲</Button>
               <Button type="button" onClick={handleReset}>
