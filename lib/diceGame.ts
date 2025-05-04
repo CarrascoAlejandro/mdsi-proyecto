@@ -57,7 +57,7 @@ export function simulateGame(
   }
 
   // Calculate summary statistics
-  const gamesWon = games.filter((game) => game.gana).length;
+  const gamesWon = games.filter((game) => game.win === 'Yes').length;
   const winPercentage = (gamesWon / throws) * 100;
 
   return {

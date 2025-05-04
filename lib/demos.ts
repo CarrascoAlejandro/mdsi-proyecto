@@ -70,7 +70,8 @@ export const demos: { name: string; items: Item[] }[] = [
       {
         name: 'Demanda y Pedido de Azúcar',
         slug: 'demanda-y-pedido-de-azucar',
-        description: 'Create Not Found UI for specific parts of an app',
+        description:
+          'Simula la demanda y el pedido de azúcar en un sistema de inventarios',
       },
     ],
   } /*,

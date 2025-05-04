@@ -32,6 +32,7 @@ export default function Page() {
   } | null>(null);
 
   // params
+  const [maxSimulations, setMaxSimulations] = useState(100);
   const [maxGames, setMaxGames] = useState('');
   const [cost, setCost] = useState('');
   const [reward, setReward] = useState('');
@@ -217,6 +218,18 @@ export default function Page() {
                 placeholder="Semilla Dado 2"
                 value={seed2}
                 onChange={(e) => checkIfIsValidNumber(e, setSeed2)}
+              />
+            </span>
+            <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
+              Cantidad de simulaciones:
+            </span>
+            <span className="col-span-3">
+              <input
+                className="m-2 text-black"
+                name="maxGames"
+                placeholder="Cantidad de juegos"
+                value={maxSimulations}
+                onChange={(e) => checkIfIsValidNumber(e, setMaxSimulations)}
               />
             </span>
             <span className="col-span-2 pt-2 text-right text-sm font-medium md:pt-5">
